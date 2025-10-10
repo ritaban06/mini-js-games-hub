@@ -78,6 +78,21 @@ const games = [
     duration: "Endless",
     tags: ["arcade", "retro", "multiplayer", "cpu"],
   },
+
+
+  
+  {
+  name: "Flappy Bird",
+  path: "games/flappy_bird/index.html",
+  icon: "🐤",
+  description: "Tap or press SPACE to fly through pipes and beat your high score!",
+  category: "Arcade",
+  duration: "Endless",
+  tags: ["arcade", "reflex", "gravity", "fun"],
+},
+
+
+
 ];
 
 const container = document.getElementById("games-container");
