@@ -3,7 +3,8 @@ const games = [
     name: "Tic Tac Toe",
     path: "games/tictactoe/index.html",
     icon: "❎",
-    description: "Classic 3x3 strategy — outsmart your opponent before the grid fills up.",
+    description:
+      "Classic 3x3 strategy — outsmart your opponent before the grid fills up.",
     category: "Strategy",
     duration: "2 min rounds",
     tags: ["2 players", "grid", "classic"],
@@ -12,7 +13,8 @@ const games = [
     name: "Snake Game",
     path: "games/snake/index.html",
     icon: "🐍",
-    description: "Guide the snake, snack on pixels, and avoid hitting the walls or yourself.",
+    description:
+      "Guide the snake, snack on pixels, and avoid hitting the walls or yourself.",
     category: "Arcade",
     duration: "Endless",
     tags: ["arcade", "retro", "keyboard"],
@@ -21,7 +23,8 @@ const games = [
     name: "Memory Game",
     path: "games/memory/index.html",
     icon: "🧠",
-    description: "Flip cards, remember emoji pairs, and clear the board in record time.",
+    description:
+      "Flip cards, remember emoji pairs, and clear the board in record time.",
     category: "Brain Teaser",
     duration: "5 min",
     tags: ["memory", "solo", "matching"],
@@ -30,7 +33,8 @@ const games = [
     name: "Whack-a-Mole",
     path: "games/whack-a-mole/index.html",
     icon: "🔨",
-    description: "Moles pop fast — keep your reflexes sharp to stack up the score.",
+    description:
+      "Moles pop fast — keep your reflexes sharp to stack up the score.",
     category: "Arcade",
     duration: "30 sec",
     tags: ["reflex", "timed", "mouse"],
@@ -39,7 +43,8 @@ const games = [
     name: "Reaction Timer",
     path: "games/reaction-timer/index.html",
     icon: "⚡",
-    description: "Wait for green, tap quickly, and chase a new personal best reaction time.",
+    description:
+      "Wait for green, tap quickly, and chase a new personal best reaction time.",
     category: "Reflex",
     duration: "Quick burst",
     tags: ["speed", "focus", "solo"],
@@ -48,7 +53,8 @@ const games = [
     name: "2048",
     path: "games/2048/index.html",
     icon: "🔢",
-    description: "Slide tiles to combine numbers and reach 2048. A relaxing puzzle of strategy and luck.",
+    description:
+      "Slide tiles to combine numbers and reach 2048. A relaxing puzzle of strategy and luck.",
     category: "Puzzle",
     duration: "10-20 min",
     tags: ["puzzle", "singleplayer", "numbers"],
@@ -57,10 +63,21 @@ const games = [
     name: "15 Puzzle",
     path: "games/15-puzzle/index.html",
     icon: "🔳",
-    description: "Arrange the numbered tiles in order by sliding them into the empty space. Classic spatial puzzle.",
+    description:
+      "Arrange the numbered tiles in order by sliding them into the empty space. Classic spatial puzzle.",
     category: "Puzzle",
     duration: "5-15 min",
     tags: ["puzzle", "tiles", "spatial"],
+  },
+  {
+    name: "Typing Test",
+    path: "games/typing-test/index.html",
+    icon: "⌨️",
+    description:
+      "Test your typing speed and accuracy in 1 minute. Challenge yourself and improve!",
+    category: "Skill",
+    duration: "1 min",
+    tags: ["typing", "speed", "accuracy", "skill"],
   },
 ];
 
