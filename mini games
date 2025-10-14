@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini JS Games Hub</title>
+  <meta name="description" content="A simple and exciting collection of mini-games " />
+  <style>
+    /* ------------------ Base Reset & Vars ------------------ */
+    :root{
+      --bg: linear-gradient(135deg,#0f172a 0%, #0b1220 100%);
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.05);
+      --accent: #7c5cff;
+      --accent-2: #00d4ff;
+      --muted: rgba(255,255,255,0.65);
+      --glass-border: rgba(255,255,255,0.08);
+      --success: #28c76f;
+      --danger: #ff6b6b;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;min-height:100%;
+      background:var(--bg);color:#fff;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      display:flex;align-items:center;justify-content:center;padding:32px;
+    }
+    .app{
+      width:100%;max-width:1100px;border-radius:14px;padding:20px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      box-shadow: 0 8px 30px rgba(2,6,23,0.7);
+      border:1px solid rgba(255,255,255,0.04);
+      display:grid;grid-template-columns: 300px 1fr;gap:18px;align-items:start;
+    }
+    header.app-header{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 6px 18px rgba(124,92,255,0.18)}
+    .logo span{font-family:monospace}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    /* ------------------ Sidebar ------------------ */
+    .sidebar{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px;border:1px solid var(--glass-border)}
+    .games-list{list-style:none;padding:0;margin:8px 0 0}
+    .games-list li{margin-bottom:8px}
+    .game-btn{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:transparent;border:1px solid transparent;cursor:pointer;width:100%;color:var(--muted);font-weight:600}
+    .game-btn:hover{transform:translateY(-3px)}
+    .game-btn.active{background:linear-gradient(90deg, rgba(124,92,255,0.12), rgba(0,212,255,0.06));color:#fff;border:1px solid rgba(124,92,255,0.14);box-shadow:0 6px 18px rgba(12,9,32,0.6)}
+    .game-icon{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.03);font-weight:700}
+    .sidebar .credit{margin-top:14px;color:var(--muted);font-size:13px}
+
+    /* ------------------ Main Area ------------------ */
+    .main{min-height:520px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid var(--glass-border)}
+    .game-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+    .controls{display:flex;gap:8px;align-items:center}
+    .btn{cursor:pointer;padding:8px 12px;border-radius:10px;border:0;background:rgba(255,255,255,0.06);color:#fff;font-weight:600}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 6px 18px rgba(124,92,255,0.12)}
+
+    /* ------------------ Game containers ------------------ */
+    .game-area{padding:12px;background:rgba(255,255,255,0.02);border-radius:10px;min-height:420px;display:flex;align-items:center;justify-content:center}
+
+    /* ------------------ RPS ------------------ */
+    .rps {text-align:center}
+    .rps .choices{display:flex;gap:12px;justify-content:center;margin-top:16px}
+    .choice{padding:14px;border-radius:12px;width:120px;background:rgba(255,255,255,0.03);cursor:pointer;border:1px solid rgba(255,255,255,0.03)}
+    .choice:hover{transform:translateY(-6px)}
+    .rps .status{margin-top:14px;font-size:18px;font-weight:700}
+    .rps .scoreboard{display:flex;gap:16px;justify-content:center;margin-top:12px}
+
+    /* ------------------ Memory ------------------ */
+    .memory-grid{width:100%;max-width:540px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .card{aspect-ratio:1/1;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;user-select:none;border:1px solid rgba(255,255,255,0.03);position:relative;transform-style:preserve-3d;transition:transform 400ms}
+    .card.flipped{transform:rotateY(180deg)}
+    .card .front,.card .back{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:10px}
+    .card .front{transform:rotateY(180deg);backface-visibility:hidden}
+    .card .back{backface-visibility:hidden}
+
+    /* ------------------ Snake ------------------ */
+    .snake-board{background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(255,255,255,0.02));padding:12px;border-radius:12px}
+    .grid{display:grid;gap:2px;background:rgba(255,255,255,0.02);padding:8px;border-radius:8px}
+    .cell{width:18px;height:18px;background:transparent;border-radius:4px}
+    .cell.wall{background:rgba(255,255,255,0.04)}
+    .cell.snake{background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 3px 8px rgba(124,92,255,0.06) inset}
+    .cell.food{background:linear-gradient(90deg,#ffd166,#ff6b6b)}
+    .meta{display:flex;gap:12px;align-items:center;color:var(--muted);font-weight:600}
+
+    /* ------------------ Responsive ------------------ */
+    @media (max-width:880px){.app{grid-template-columns:1fr;max-width:920px}.sidebar{order:2}}
+  </style>
+</head>
+<body>
+  <div class="app" role="application">
+    <div class="sidebar">
+      <div class="app-head" style="display:flex;align-items:center;gap:12px">
+        <div class="logo"><span>G</span></div>
+        <div>
+          <h1>Mini JS Games Hub</h1>
+          <p class="lead">Three bite-sized games — quick, polished, and fun.</p>
+        </div>
+      </div>
+
+      <ul class="games-list" id="gamesList">
+        <li><button class="game-btn active" data-game="rps"><div class="game-icon">✊</div> Rock • Paper • Scissors</button></li>
+        <li><button class="game-btn" data-game="memory"><div class="game-icon">🧠</div> Memory Match</button></li>
+        <li><button class="game-btn" data-game="snake"><div class="game-icon">🐍</div> Snake</button></li>
+      </ul>
+
+      <div class="credit">Built with ❤️ & JavaScript • Small, modular, and responsive. Click a game to start.</div>
+    </div>
+
+    <main class="main">
+      <div class="game-header">
+        <div>
+          <h2 id="gameTitle">Rock • Paper • Scissors</h2>
+          <div id="gameDesc" style="color:var(--muted);font-size:13px">Classic best-of-5 duel against the computer.</div>
+        </div>
+        <div class="controls">
+          <button id="restartBtn" class="btn ghost">Restart</button>
+          <button id="guideBtn" class="btn">How to Play</button>
+        </div>
+      </div>
+
+      <section class="game-area" id="gameArea">
+        <!-- Game panels will be injected here -->
+      </section>
+    </main>
+  </div>
+
+  <template id="rpsTpl">
+    <div class="rps" style="width:100%">
+      <div class="scoreboard">
+        <div class="meta">You: <span id="rpsPlayerScore">0</span></div>
+        <div class="meta">Computer: <span id="rpsComputerScore">0</span></div>
+      </div>
+      <div class="choices" role="list">
+        <div class="choice" data-choice="rock">✊<div style="font-size:12px;margin-top:8px;color:var(--muted)">Rock</div></div>
+        <div class="choice" data-choice="paper">✋<div style="font-size:12px;margin-top:8px;color:var(--muted)">Paper</div></div>
+        <div class="choice" data-choice="scissors">✌️<div style="font-size:12px;margin-top:8px;color:var(--muted)">Scissors</div></div>
+      </div>
+      <div class="status" id="rpsStatus">Make your choice!</div>
+      <div style="text-align:center;margin-top:12px"><small style="color:var(--muted)">First to 3 wins the match.</small></div>
+    </div>
+  </template>
+
+  <template id="memoryTpl">
+    <div class="memory" style="width:100%;display:flex;flex-direction:column;align-items:center">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+        <div class="meta">Moves: <span id="memMoves">0</span></div>
+        <div class="meta">Matches: <span id="memMatches">0</span></div>
+        <button id="memShuffle" class="btn ghost">Shuffle</button>
+      </div>
+      <div class="memory-grid" id="memoryGrid"></div>
+    </div>
+  </template>
+
+  <template id="snakeTpl">
+    <div class="snake" style="width:100%;display:flex;flex-direction:column;align-items:center">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+        <div class="meta">Score: <span id="snakeScore">0</span></div>
+        <div class="meta">Speed: <span id="snakeSpeed">--</span></div>
+        <div style="color:var(--muted);font-size:13px">Use arrow keys or WASD to move</div>
+      </div>
+      <div class="snake-board" id="snakeBoard">
+        <div class="grid" id="snakeGrid"></div>
+      </div>
+      <div style="margin-top:10px"><button id="snakeStart" class="btn primary">Start Game</button></div>
+    </div>
+  </template>
+
+  <script>
+    /* ------------------ App Shell ------------------ */
+    const games = {
+      rps: {title: 'Rock • Paper • Scissors', desc: 'Classic best-of-5 duel against the computer.'},
+      memory: {title: 'Memory Match', desc: 'Flip cards to find matching pairs. Train your memory!'},
+      snake: {title: 'Snake', desc: 'Grow longer by eating food. Avoid the walls and your tail!'}
+    };
+
+    const gamesList = document.getElementById('gamesList');
+    const gameArea = document.getElementById('gameArea');
+    const gameTitle = document.getElementById('gameTitle');
+    const gameDesc = document.getElementById('gameDesc');
+    const restartBtn = document.getElementById('restartBtn');
+    const guideBtn = document.getElementById('guideBtn');
+
+    let activeGame = 'rps';
+
+    function setActiveGame(name){
+      activeGame = name;
+      gameTitle.textContent = games[name].title;
+      gameDesc.textContent = games[name].desc;
+      document.querySelectorAll('.game-btn').forEach(b=>b.classList.toggle('active', b.dataset.game===name));
+      renderActive();
+    }
+
+    gamesList.addEventListener('click', e=>{
+      const btn = e.target.closest('.game-btn'); if(!btn) return;
+      setActiveGame(btn.dataset.game);
+    });
+
+    restartBtn.addEventListener('click', ()=>{
+      // restart current game
+      initGame(activeGame, true);
+    });
+    guideBtn.addEventListener('click', ()=>{
+      alert(games[activeGame].desc);
+    });
+
+    function renderActive(){
+      gameArea.innerHTML='';
+      const tpl = document.getElementById(activeGame+'Tpl');
+      gameArea.appendChild(tpl.content.cloneNode(true));
+      initGame(activeGame);
+    }
+
+    /* ------------------ RPS Logic ------------------ */
+    function initRPS(restart=false){
+      let playerScore = 0, computerScore = 0, target = 3;
+      const status = document.getElementById('rpsStatus');
+      const playerScoreEl = document.getElementById('rpsPlayerScore');
+      const compScoreEl = document.getElementById('rpsComputerScore');
+      const choices = [...document.querySelectorAll('.choice')];
+
+      function pickComputer(){
+        const arr=['rock','paper','scissors'];
+        return arr[Math.floor(Math.random()*arr.length)];
+      }
+      function decide(a,b){
+        if(a===b) return 'tie';
+        if((a==='rock' && b==='scissors') || (a==='scissors' && b==='paper') || (a==='paper' && b==='rock')) return 'win';
+        return 'lose';
+      }
+      function endCheck(){
+        if(playerScore>=target || computerScore>=target){
+          choices.forEach(c=>c.style.pointerEvents='none');
+          if(playerScore>computerScore) status.textContent='You won the match! 🎉';
+          else status.textContent='Computer wins. Try again!';
+        }
+      }
+      choices.forEach(ch=>ch.addEventListener('click', ()=>{
+        if(playerScore>=target || computerScore>=target) return;
+        const player = ch.dataset.choice;
+        const comp = pickComputer();
+        const res = decide(player, comp);
+        if(res==='win'){playerScore++; status.textContent = `You chose ${player}, computer chose ${comp}. You win this round!`}
+        else if(res==='lose'){computerScore++; status.textContent = `You chose ${player}, computer chose ${comp}. You lost this round.`}
+        else status.textContent = `Both chose ${player}. It's a tie.`;
+        playerScoreEl.textContent = playerScore; compScoreEl.textContent = computerScore;
+        endCheck();
+      }));
+      // expose reset
+      return ()=>{playerScore=0;computerScore=0;playerScoreEl.textContent='0';compScoreEl.textContent='0';status.textContent='Make your choice!';choices.forEach(c=>c.style.pointerEvents='auto')}
+    }
+
+    /* ------------------ Memory Logic ------------------ */
+    function initMemory(restart=false){
+      const symbols = ['🍎','🍌','🍇','🍓','🍒','🍍','🥝','🍑']; // 8 pairs -> 16 cards
+      let deck = [...symbols, ...symbols];
+      let moves = 0, matches = 0, first=null, second=null, busy=false;
+      const grid = document.getElementById('memoryGrid');
+      const movesEl = document.getElementById('memMoves');
+      const matchesEl = document.getElementById('memMatches');
+      const shuffleBtn = document.getElementById('memShuffle');
+
+      function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+      function build(){
+        grid.innerHTML='';
+        deck = shuffle(deck.slice());
+        deck.forEach((sym,i)=>{
+          const card = document.createElement('div');card.className='card';card.dataset.value=sym;card.dataset.index=i;
+          card.innerHTML = `
+            <div class="front">${sym}</div>
+            <div class="back">?</div>
+          `;
+          card.addEventListener('click', ()=>onCardClick(card));
+          grid.appendChild(card);
+        });
+        moves=0;matches=0;first=null;second=null;busy=false;updateMeta();
+      }
+      function updateMeta(){movesEl.textContent=moves;matchesEl.textContent=matches}
+      function onCardClick(card){
+        if(busy) return; if(card.classList.contains('matched')||card===first) return;
+        card.classList.add('flipped');
+        if(!first){first=card;return}
+        second=card; moves++; updateMeta();
+        if(first.dataset.value===second.dataset.value){
+          first.classList.add('matched');second.classList.add('matched');matches++;first=null;second=null;updateMeta();
+          if(matches===symbols.length){setTimeout(()=>alert(`You won! Completed in ${moves} moves.`),200)}
+          return;
+        }
+        busy=true;
+        setTimeout(()=>{first.classList.remove('flipped');second.classList.remove('flipped');first=null;second=null;busy=false},700)
+      }
+      shuffleBtn.addEventListener('click',()=>build());
+      build();
+      // return reset function
+      return ()=>build();
+    }
+
+    /* ------------------ Snake Logic ------------------ */
+    function initSnake(restart=false){
+      const gridEl = document.getElementById('snakeGrid');
+      const boardEl = document.getElementById('snakeBoard');
+      const scoreEl = document.getElementById('snakeScore');
+      const speedEl = document.getElementById('snakeSpeed');
+      const startBtn = document.getElementById('snakeStart');
+      const rows=16, cols=28; // playable grid
+      gridEl.style.gridTemplateColumns = `repeat(${cols}, 18px)`;
+      gridEl.innerHTML='';
+      let cells = [];
+      for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+          const cell = document.createElement('div');cell.className='cell';gridEl.appendChild(cell);cells.push(cell);
+        }
+      }
+
+      let snake = [{r:Math.floor(rows/2), c:Math.floor(cols/2)}];
+      let dir = {r:0,c:1}; let food = null; let score=0; let speed=120; let timer = null; let running=false;
+
+      function rcToIndex(r,c){return r*cols + c}
+      function placeFood(){
+        while(true){
+          const r = Math.floor(Math.random()*rows); const c = Math.floor(Math.random()*cols);
+          if(!snake.some(s=>s.r===r && s.c===c)){food = {r,c}; break}
+        }
+      }
+      function draw(){
+        cells.forEach(cell=>cell.className='cell');
+        // snake
+        snake.forEach((s,i)=>{const idx=rcToIndex(s.r,s.c);cells[idx].classList.add('snake')});
+        if(food){cells[rcToIndex(food.r,food.c)].classList.add('food')}
+      }
+      function step(){
+        const head = {...snake[0]}; head.r += dir.r; head.c += dir.c;
+        // wall collision
+        if(head.r<0 || head.r>=rows || head.c<0 || head.c>=cols){gameOver();return}
+        // self collision
+        if(snake.some(s=>s.r===head.r && s.c===head.c)){gameOver();return}
+        snake.unshift(head);
+        // food?
+        if(food && head.r===food.r && head.c===food.c){score++;scoreEl.textContent=score;placeFood();}
+        else snake.pop();
+        draw();
+      }
+      function gameOver(){stop();alert('Game over! Score: '+score);}
+      function start(){if(running) return;running=true;startBtn.textContent='Stop Game';placeFood();timer = setInterval(step,speed);speedEl.textContent=(1000/speed).toFixed(2)+' ops';}
+      function stop(){running=false;startBtn.textContent='Start Game';clearInterval(timer);}
+      function reset(){stop();snake=[{r:Math.floor(rows/2), c:Math.floor(cols/2)}];dir={r:0,c:1};score=0;scoreEl.textContent=0;food=null;draw();}
+
+      startBtn.addEventListener('click', ()=>{ if(running) stop(); else start();});
+      // keyboard
+      window.addEventListener('keydown', (e)=>{
+        const key = e.key.toLowerCase();
+        const map = {arrowup:[-1,0],arrowdown:[1,0],arrowleft:[0,-1],arrowright:[0,1],w:[-1,0],s:[1,0],a:[0,-1],d:[0,1]};
+        if(map[key]){
+          const [dr,dc] = map[key];
+          // prevent reverse
+          if(snake.length>1 && snake[1].r===snake[0].r+dr && snake[1].c===snake[0].c+dc) return;
+          dir = {r:dr,c:dc};
+        }
+      });
+
+      reset();
+      // return reset function
+      return ()=>reset();
+    }
+
+    /* ------------------ Game init switch ------------------ */
+    let currentResetFn = null;
+    function initGame(name, forceRestart=false){
+      if(currentResetFn && !forceRestart) { /* existing game continues */ }
+      // remove event listeners? we rely on cleaning via re-render
+      if(name==='rps') currentResetFn = initRPS();
+      else if(name==='memory') currentResetFn = initMemory();
+      else if(name==='snake') currentResetFn = initSnake();
+    }
+
+    // initial
+    setActiveGame('rps');
+
+    // small accessibility: allow focus outline on keyboard nav
+    document.body.addEventListener('keyup', (e)=>{if(e.key==='Tab') document.body.style.outline='none'});
+  </script>
+</body>
+</html>
