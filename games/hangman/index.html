@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="game-container">
+        <h1>Hangman 🔪</h1>
+        <p class="intro">Guess the hidden word, one letter at a time. You get 6 mistakes!</p>
+
+        <div class="hud">
+            <span id="score">Score: 0</span>
+            <button id="start-button">New Word</button>
+        </div>
+        
+        <div id="hangman-drawing" aria-label="Hangman visual display">
+            <p id="lives-display">Lives: <span>6</span></p>
+        </div>
+
+        <div id="word-display" class="word-display" aria-live="polite">
+            </div>
+
+        <div id="keyboard" class="keyboard">
+            </div>
+
+        <p id="message" aria-live="polite">Click "New Word" to start the game.</p>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

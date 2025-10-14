@@ -1,0 +1,124 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #0d1117;
+    color: #ffffff;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.game-container {
+    width: min(90vw, 600px);
+    padding: 20px;
+    background: #111a2e;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    margin-bottom: 0.5rem;
+    color: #f0883e; /* Orange accent */
+}
+
+.intro {
+    margin-top: 0;
+    color: #94a3b8;
+    font-size: 0.9em;
+}
+
+.hud {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    background-color: #161b22;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+#start-button {
+    background-color: #f0883e;
+    color: #0d1117;
+    border: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+#start-button:hover:not(:disabled) {
+    background-color: #ff994f;
+    transform: translateY(-2px);
+}
+
+#lives-display {
+    font-size: 1.2rem;
+    color: #e6eef8;
+    margin: 10px 0;
+}
+
+#lives-display span {
+    font-weight: 700;
+    color: #ff6347; /* Red for high visibility */
+}
+
+.word-display {
+    font-size: 2.5rem;
+    letter-spacing: 15px;
+    margin: 30px 0;
+    font-family: monospace;
+    color: #2dd4bf; /* Teal for letters */
+}
+
+.keyboard {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 6px;
+    margin: 20px auto;
+    max-width: 480px;
+}
+.keyboard button {
+    background: #21262d;
+    color: #ffffff;
+    border: 1px solid #30363d;
+    padding: 10px 0;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.1s ease, transform 0.1s ease;
+}
+
+.keyboard button:hover:not(:disabled) {
+    background: #30363d;
+    transform: scale(1.05);
+}
+
+.keyboard button:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.keyboard button.correct {
+    background: #238636;
+    color: #0d1117;
+}
+
+.keyboard button.incorrect {
+    background: #dc3545;
+    color: #0d1117;
+}
+
+#message {
+    min-height: 1.5rem;
+    color: #e6eef8;
+    font-weight: 600;
+    margin-top: 20px;
+}

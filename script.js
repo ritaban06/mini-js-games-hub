@@ -138,6 +138,16 @@ const games = [
   category: "Reflex / Skill",
   duration: "30 seconds per round",
   tags: ["single player", "reaction", "fast-paced", "matte UI"],
+},
+{
+    name: "Hangman",
+    path: "games/hangman/index.html",
+    icon: "🔪",
+    description:
+        "A classic word guessing game. You have 6 attempts to discover the hidden word before the man is hanged.",
+    category: "Word Game",
+    duration: "3 min rounds",
+    tags: ["solo", "word", "classic", "memory"],
 }
 
 
