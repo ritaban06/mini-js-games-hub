@@ -1,0 +1,34 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.container {
+  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+input {
+  padding: 8px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#result {
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 18px;
+}
