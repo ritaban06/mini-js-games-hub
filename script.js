@@ -204,6 +204,15 @@ const games = [
   category: "Strategy",
   duration: "5-10 min",
   tags: ["two-player", "grid", "classic"],
+},
+{
+  name: "Sunday Monday",
+  path: "games/sunday-monday/index.html",
+  icon: "📅",
+  description: "Click the days of the week in correct order! Fun and interactive memory game.",
+  category: "Memory / Fun",
+  duration: "Quick play",
+  tags: ["memory", "days", "fun", "simple", "interactive"]
 }];
 
 const container = document.getElementById("games-container");
