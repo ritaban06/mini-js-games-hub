@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asteroids</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="instructions-overlay">
+        <div id="instructions-content">
+            <h2>ASTEROIDS</h2>
+            <p>Destroy all the asteroids to survive!</p>
+            
+            <h3>Controls:</h3>
+            <ul>
+                <li><code>ArrowUp</code> - Thrust Forward</li>
+                <li><code>ArrowLeft</code> / <code>ArrowRight</code> - Rotate Ship</li>
+                <li><code>Space</code> - Shoot Laser</li>
+            </ul>
+            
+            <button id="startButton">Start Game</button>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    
+    <script src="script.js"></script>
+</body>
+</html>
