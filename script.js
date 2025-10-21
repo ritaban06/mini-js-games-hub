@@ -377,7 +377,7 @@ const games = [
   name: "Odd One Out",
   path: "games/odd-one-out/index.html",
   icon: "🔍",
-  description: "Find the odd emoji/ odd-coloured tile out from a group of similar ones!",
+  description: "Find the odd emoji/odd-coloured tile out from a group of similar ones!",
   category: "Puzzle",
   duration: "1 min",
   tags: ["single player", "puzzle", "emoji", "fun"],
