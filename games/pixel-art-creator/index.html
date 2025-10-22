@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pixel Art Creator</h1>
+        <p>Create your own pixel art masterpiece! Click on the grid to paint, choose colors from the palette, and save your creations.</p>
+        
+        <div class="game-area">
+            <div class="canvas-section">
+                <canvas id="pixel-canvas" width="512" height="512"></canvas>
+            </div>
+            
+            <div class="controls">
+                <div class="color-palette">
+                    <h3>Color Palette</h3>
+                    <div class="colors">
+                        <div class="color" data-color="#000000"></div>
+                        <div class="color" data-color="#FFFFFF"></div>
+                        <div class="color" data-color="#FF0000"></div>
+                        <div class="color" data-color="#00FF00"></div>
+                        <div class="color" data-color="#0000FF"></div>
+                        <div class="color" data-color="#FFFF00"></div>
+                        <div class="color" data-color="#FF00FF"></div>
+                        <div class="color" data-color="#00FFFF"></div>
+                        <div class="color" data-color="#FFA500"></div>
+                        <div class="color" data-color="#800080"></div>
+                        <div class="color" data-color="#FFC0CB"></div>
+                        <div class="color" data-color="#A52A2A"></div>
+                        <div class="color" data-color="#808080"></div>
+                        <div class="color" data-color="#000080"></div>
+                        <div class="color" data-color="#008000"></div>
+                        <div class="color" data-color="#FF4500"></div>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button id="clear-btn">Clear Canvas</button>
+                    <button id="save-btn">Save Art</button>
+                    <button id="load-btn">Load Art</button>
+                    <button id="export-btn">Export as Image</button>
+                    <button id="share-btn">Share Code</button>
+                </div>
+                
+                <div class="current-color">
+                    <h3>Current Color</h3>
+                    <div id="selected-color" style="background-color: #000000;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -384,17 +384,24 @@ const games = [
   tags: ["single player", "puzzle", "emoji", "fun"],
 },
 {
-  name: "Tap the Bubble",
-  path: "games/tap-the-bubble/index.html",
-  icon: "🫧",
-  description: "Tap the bubbles as they appear to score points! How many can you pop?",
-  category: "Arcade / Reflex",
-  duration: "Endless",
-  tags: ["reflex", "clicker", "solo", "bubble"],
+  name: "Tap the Bubble",
+  path: "games/tap-the-bubble/index.html",
+  icon: "🫧",
+  description: "Tap the bubbles as they appear to score points! How many can you pop?",
+  category: "Arcade / Reflex",
+  duration: "Endless",
+  tags: ["reflex", "clicker", "solo", "bubble"],
+},
+{
+  name: "Pixel Art Creator",
+  path: "games/pixel-art-creator/index.html",
+  icon: "🎨",
+  description: "Create your own pixel art masterpieces on a 16x16 grid! Choose colors, paint, save, and export your creations.",
+  category: "Creative",
+  duration: "Unlimited",
+  tags: ["creative", "art", "pixel", "canvas", "design"],
 }
-];
-
-const container = document.getElementById("games-container");
+];const container = document.getElementById("games-container");
 const searchInput = document.getElementById("game-search");
 const emptyState = document.getElementById("empty-state");
 const clearSearchButton = document.getElementById("clear-search");
