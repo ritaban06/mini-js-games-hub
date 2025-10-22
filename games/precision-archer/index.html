@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Archer - Target Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1>🏹 Precision Archer</h1>
+            <p>Test your aiming skills with physics-based archery!</p>
+        </header>
+
+        <div class="game-area">
+            <canvas id="game-canvas" width="800" height="400"></canvas>
+
+            <div class="game-ui">
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="power-slider">Power:</label>
+                        <input type="range" id="power-slider" min="10" max="100" value="50">
+                        <span id="power-value">50</span>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="angle-slider">Angle:</label>
+                        <input type="range" id="angle-slider" min="0" max="90" value="45">
+                        <span id="angle-value">45°</span>
+                    </div>
+
+                    <button id="shoot-btn" class="shoot-button">🎯 Shoot Arrow</button>
+                    <button id="reset-btn" class="reset-button">🔄 Reset</button>
+                </div>
+
+                <div class="wind-indicator">
+                    <div class="wind-label">Wind:</div>
+                    <div id="wind-direction" class="wind-direction">→</div>
+                    <div id="wind-strength" class="wind-strength">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-item">
+                <span class="stat-label">Score:</span>
+                <span id="score" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Arrows:</span>
+                <span id="arrows-left" class="stat-value">10</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Accuracy:</span>
+                <span id="accuracy" class="stat-value">0%</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Best Shot:</span>
+                <span id="best-score" class="stat-value">0</span>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play:</h3>
+            <ul>
+                <li>Adjust power and angle using the sliders</li>
+                <li>Watch the wind direction and strength</li>
+                <li>Click "Shoot Arrow" to fire</li>
+                <li>Hit targets for points (bullseye = 100pts)</li>
+                <li>Different targets give different scores</li>
+                <li>You have 10 arrows per round</li>
+            </ul>
+        </div>
+
+        <div id="game-over-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h2>Round Complete!</h2>
+                <div class="final-stats">
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <p>Accuracy: <span id="final-accuracy">0%</span></p>
+                    <p>Best Shot: <span id="final-best">0</span></p>
+                </div>
+                <button id="play-again-btn" class="play-again-button">🎯 Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
