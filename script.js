@@ -400,6 +400,15 @@ const games = [
   category: "Creative",
   duration: "Unlimited",
   tags: ["creative", "art", "pixel", "canvas", "design"],
+},
+{
+  name: "Word Chain Puzzle",
+  path: "games/word-chain-puzzle/index.html",
+  icon: "🔗",
+  description: "Build word chains in different categories! Think fast and create the longest chain before time runs out.",
+  category: "Word Puzzle",
+  duration: "1 min rounds",
+  tags: ["words", "puzzle", "vocabulary", "timer", "categories"],
 }
 ];const container = document.getElementById("games-container");
 const searchInput = document.getElementById("game-search");

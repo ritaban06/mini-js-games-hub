@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Chain Puzzle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Word Chain Puzzle</h1>
+        <p>Build the longest chain of related words! Choose a category and start chaining words before time runs out.</p>
+
+        <div class="game-area">
+            <div class="setup" id="setup-screen">
+                <h2>Choose Category</h2>
+                <div class="categories">
+                    <button class="category-btn" data-category="animals">Animals</button>
+                    <button class="category-btn" data-category="food">Food</button>
+                    <button class="category-btn" data-category="technology">Technology</button>
+                    <button class="category-btn" data-category="colors">Colors</button>
+                    <button class="category-btn" data-category="sports">Sports</button>
+                    <button class="category-btn" data-category="countries">Countries</button>
+                </div>
+            </div>
+
+            <div class="game" id="game-screen" style="display: none;">
+                <div class="game-info">
+                    <div class="timer">Time: <span id="time-left">60</span>s</div>
+                    <div class="score">Score: <span id="current-score">0</span></div>
+                    <div class="chain-length">Chain: <span id="chain-length">1</span></div>
+                </div>
+
+                <div class="word-chain">
+                    <div id="word-list"></div>
+                </div>
+
+                <div class="input-section">
+                    <input type="text" id="word-input" placeholder="Enter next word..." autocomplete="off">
+                    <button id="submit-btn">Submit</button>
+                </div>
+
+                <div class="hints">
+                    <p id="hint-text">Think of words related to the category!</p>
+                </div>
+            </div>
+
+            <div class="game-over" id="game-over-screen" style="display: none;">
+                <h2>Game Over!</h2>
+                <div class="final-stats">
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <p>Longest Chain: <span id="final-chain">0</span></p>
+                    <p>High Score: <span id="high-score">0</span></p>
+                </div>
+                <button id="play-again-btn">Play Again</button>
+                <button id="back-to-menu-btn">Choose New Category</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
