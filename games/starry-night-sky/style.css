@@ -1,0 +1,445 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0c0c0c, #1a1a2e, #16213e);
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    transition: background 1s ease;
+}
+
+body.nebula-theme {
+    background: linear-gradient(135deg, #0c0c0c, #2d1b69, #11998e);
+}
+
+body.galaxy-theme {
+    background: linear-gradient(135deg, #0c0c0c, #667eea, #764ba2);
+}
+
+body.aurora-theme {
+    background: linear-gradient(135deg, #0c0c0c, #11998e, #38ef7d);
+}
+
+.container {
+    text-align: center;
+    max-width: 900px;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.2); }
+}
+
+.description {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+.game-area {
+    position: relative;
+    margin: 20px auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+#starry-canvas {
+    display: block;
+    background: radial-gradient(ellipse at center, #1a1a2e 0%, #0c0c0c 100%);
+    cursor: crosshair;
+    transition: all 0.5s ease;
+}
+
+.breathing-guide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.breath-circle {
+    width: 100px;
+    height: 100px;
+    border: 3px solid #4ecdc4;
+    border-radius: 50%;
+    animation: breathe 4s ease-in-out infinite;
+    opacity: 0.7;
+}
+
+@keyframes breathe {
+    0%, 100% { transform: scale(0.8); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 0.9; }
+}
+
+.breath-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #4ecdc4;
+    font-size: 1.2rem;
+    font-weight: bold;
+    animation: textFade 4s ease-in-out infinite;
+}
+
+@keyframes textFade {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.constellation-hint {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffeaa7;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.constellation-hint.show {
+    opacity: 1;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    min-width: 120px;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+.control-btn.active {
+    background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+}
+
+.info-panel {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.score, .instructions {
+    flex: 1;
+    min-width: 250px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.score h3 {
+    margin-bottom: 15px;
+    color: #4ecdc4;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+.progress-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.achievements {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.achievement {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    animation: achievementGlow 0.5s ease;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.achievement:hover {
+    transform: scale(1.05);
+}
+
+@keyframes achievementGlow {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.instructions h3 {
+    margin-bottom: 15px;
+    color: #45b7d1;
+}
+
+.instructions ul {
+    text-align: left;
+    list-style-position: inside;
+    line-height: 1.8;
+}
+
+.instructions li {
+    margin-bottom: 5px;
+    opacity: 0.9;
+}
+
+.stats {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.stat {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.achievement-gallery {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: galleryFadeIn 0.5s ease;
+}
+
+@keyframes galleryFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.achievement-gallery h3 {
+    margin-bottom: 20px;
+    color: #ffeaa7;
+}
+
+.gallery-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    max-width: 800px;
+    max-height: 60vh;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.gallery-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-item.discovered {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    color: #333;
+}
+
+.gallery-item.undiscovered {
+    opacity: 0.5;
+    filter: blur(1px);
+}
+
+/* Enhanced star animations */
+.star {
+    animation: twinkle 3s infinite;
+}
+
+.star.selected {
+    animation: none;
+    fill: #ffd700;
+}
+
+.star.shooting {
+    animation: shootingStar 2s linear;
+}
+
+@keyframes shootingStar {
+    0% { opacity: 0; transform: translateX(-100px) translateY(-100px); }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(100px) translateY(100px); }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Constellation line animations */
+.constellation-line {
+    stroke-dasharray: 5, 5;
+    animation: dash 2s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -10;
+    }
+}
+
+.constellation-complete {
+    animation: constellationGlow 1s ease-in-out;
+}
+
+@keyframes constellationGlow {
+    0% { filter: drop-shadow(0 0 5px #ff6b6b); }
+    50% { filter: drop-shadow(0 0 20px #ff6b6b); }
+    100% { filter: drop-shadow(0 0 10px #ff6b6b); }
+}
+
+/* Nebula background effects */
+.nebula-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.3;
+    animation: nebulaDrift 20s ease-in-out infinite;
+}
+
+@keyframes nebulaDrift {
+    0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+    25% { transform: translateX(10px) translateY(-5px) rotate(1deg); }
+    50% { transform: translateX(-5px) translateY(10px) rotate(-1deg); }
+    75% { transform: translateX(5px) translateY(-10px) rotate(0.5deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .game-area {
+        margin: 10px auto;
+    }
+
+    #starry-canvas {
+        width: 100%;
+        height: auto;
+        max-width: 400px;
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .control-btn {
+        min-width: 150px;
+    }
+
+    .info-panel {
+        flex-direction: column;
+    }
+
+    .gallery-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Particle effects */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleFloat 3s ease-out forwards;
+}
+
+@keyframes particleFloat {
+    0% { opacity: 1; transform: scale(0); }
+    50% { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0) translateY(-50px); }
+}

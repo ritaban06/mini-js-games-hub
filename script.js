@@ -409,6 +409,24 @@ const games = [
   category: "Word Puzzle",
   duration: "1 min rounds",
   tags: ["words", "puzzle", "vocabulary", "timer", "categories"],
+},
+{
+  name: "Starry Night Sky",
+  path: "games/starry-night-sky/index.html",
+  icon: "🌟",
+  description: "A calming relaxation game where you connect stars to form constellations. Enjoy ambient visuals and discover beautiful patterns in the night sky.",
+  category: "Relaxation",
+  duration: "Unlimited",
+  tags: ["relaxation", "stars", "constellations", "meditative", "ambient", "puzzle"],
+},
+{
+  name: "Precision Archer",
+  path: "games/precision-archer/index.html",
+  icon: "🏹",
+  description: "Test your aiming skills with physics-based archery! Adjust power and angle, account for wind, and hit targets for maximum points.",
+  category: "Skill",
+  duration: "10 arrows",
+  tags: ["archery", "physics", "aiming", "precision", "skill", "target"],
 }
 ];const container = document.getElementById("games-container");
 const searchInput = document.getElementById("game-search");

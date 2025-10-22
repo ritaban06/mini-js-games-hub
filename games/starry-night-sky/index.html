@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starry Night Sky - Relaxation Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 Starry Night Sky</h1>
+        <p class="description">Connect the stars to form constellations. Relax and enjoy the soothing music while discovering beautiful patterns in the night sky.</p>
+
+        <div class="game-area">
+            <canvas id="starry-canvas" width="800" height="600"></canvas>
+            <div id="breathing-guide" class="breathing-guide" style="display: none;">
+                <div class="breath-circle"></div>
+                <div class="breath-text">Breathe</div>
+            </div>
+            <div id="constellation-hint" class="constellation-hint"></div>
+        </div>
+
+        <div class="controls">
+            <button id="reset-btn" class="control-btn">Reset Constellation</button>
+            <button id="new-stars-btn" class="control-btn">New Starfield</button>
+            <button id="music-toggle" class="control-btn">🎵 Toggle Music</button>
+            <button id="breathing-toggle" class="control-btn">🫁 Breathing Guide</button>
+            <button id="theme-toggle" class="control-btn">🎨 Theme</button>
+        </div>
+
+        <div class="info-panel">
+            <div class="score">
+                <h3>Constellations Found: <span id="constellation-count">0</span></h3>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                    <span id="progress-text" class="progress-text">0/12</span>
+                </div>
+                <div id="achievements" class="achievements"></div>
+            </div>
+            <div class="instructions">
+                <h3>How to Play:</h3>
+                <ul>
+                    <li>Click on stars to select them</li>
+                    <li>Connect 3 or more stars to form constellations</li>
+                    <li>Discover real constellations and earn achievements</li>
+                    <li>Use breathing guide for mindfulness</li>
+                    <li>Try different themes for variety</li>
+                </ul>
+                <div class="stats">
+                    <div class="stat">Session Time: <span id="session-time">00:00</span></div>
+                    <div class="stat">Stars Connected: <span id="stars-connected">0</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="achievement-gallery" class="achievement-gallery" style="display: none;">
+            <h3>🏆 Constellation Gallery</h3>
+            <div id="gallery-content" class="gallery-content"></div>
+            <button id="close-gallery" class="control-btn">Close Gallery</button>
+        </div>
+    </div>
+
+    <audio id="ambient-music" loop>
+        <!-- Ambient music would go here -->
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
