@@ -13,7 +13,7 @@ Briefly describe your changes.
 - [ ] Other
 
 ## Related Issue
-Link the issue this PR closes (if any): #  
+Closes #  
 
 ## Files Added / Changed
 - [ ] index.html
