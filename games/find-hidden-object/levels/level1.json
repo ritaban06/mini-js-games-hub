@@ -1,5 +1,0 @@
-[
-  { "id": 1, "name": "Red Hat", "x": 180, "y": 150, "width": 40, "height": 40, "found": false },
-  { "id": 2, "name": "Cup", "x": 300, "y": 270, "width": 30, "height": 30, "found": false },
-  { "id": 3, "name": "Book", "x": 520, "y": 220, "width": 50, "height": 40, "found": false }
-]

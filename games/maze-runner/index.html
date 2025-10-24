@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Maze Runner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game-wrap">
+    <h1>Maze Runner</h1>
+
+    <div class="hud">
+      <div id="level">Level: 1</div>
+      <div id="score">Coins: 0</div>
+      <div class="controls">
+        <button id="restart">Restart</button>
+        <button id="nextLevel">Next Level</button>
+      </div>
+    </div>
+
+    <canvas id="game" width="600" height="600"></canvas>
+
+    <p class="hint">Move with arrow keys or WASD. Collect coins, reach the green exit. Each level ups the challenge.</p>
+    <footer class="credits">Built for the mini games hub — simple, readable code for learning and tweaking.</footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,6 +1,0 @@
-[
-  { "id": 1, "name": "Blue Ball", "x": 150, "y": 200, "width": 30, "height": 30, "found": false },
-  { "id": 2, "name": "Watch", "x": 370, "y": 300, "width": 35, "height": 35, "found": false },
-  { "id": 3, "name": "Key", "x": 580, "y": 250, "width": 30, "height": 30, "found": false },
-  { "id": 4, "name": "Spoon", "x": 420, "y": 120, "width": 25, "height": 25, "found": false }
-]
