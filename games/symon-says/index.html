@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon Says</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Load Tone.js for sound generation -->
+    <script src="https://unpkg.com/tone@14.8.49/build/Tone.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+
+    <div id="game-container">
+        <h1>SIMON SAYS</h1>
+
+        <div id="simon-game">
+            <!-- Game Board (Four interactive quadrants) -->
+            <div id="quadrants">
+                <div class="quadrant" id="green" data-note="E4"></div>
+                <div class="quadrant" id="red" data-note="G#4"></div>
+                <div class="quadrant" id="yellow" data-note="C#5"></div>
+                <div class="quadrant" id="blue" data-note="E5"></div>
+
+                <!-- Center Display -->
+                <div id="center-display">
+                    <div id="score-display">
+                        SCORE: <span id="score-value">0</span>
+                    </div>
+                    <button id="start-button">START</button>
+                    <div id="message">Click START to begin!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

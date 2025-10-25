@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights Out Puzzle</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div id="game-container">
+        <h1>LIGHTS OUT</h1>
+        <p>Turn all the dark lights <span>ON</span> (yellow) to win!</p>
+
+        <div class="stats-bar">
+            <div class="moves-box">
+                <span class="label">MOVES:</span>
+                <span id="moves-counter" class="value">0</span>
+            </div>
+            <button id="reset-button">
+                New Game
+            </button>
+        </div>
+
+        <div id="game-grid">
+            </div>
+    </div>
+
+    <div id="win-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>YOU WON! 🎉</h2>
+            <p>You solved the puzzle in <span id="final-moves"></span> moves!</p>
+            <button id="play-again-button">
+                Play Again
+            </button>
+        </div>
+    </div>
+</body>
+</html>
