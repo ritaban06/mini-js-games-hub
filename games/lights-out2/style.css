@@ -1,0 +1,196 @@
+/* Global Reset and Typography */
+:root {
+    --grid-size: 5;
+    --gap-size: 8px;
+    --light-color: #ffde59;
+    --dark-bg: #0d1117;
+    --card-bg: #161b22;
+    --cell-off: #21262d;
+    --cell-border: #30363d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--dark-bg);
+    color: #c9d1d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container and Header */
+#game-container {
+    width: 100%;
+    max-width: 500px;
+    background-color: var(--card-bg);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+p {
+    font-size: 0.9rem;
+    color: #8b949e;
+    margin-bottom: 20px;
+}
+
+p span {
+    font-weight: bold;
+    color: var(--light-color);
+}
+
+/* Stats Bar */
+.stats-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.moves-box {
+    background-color: #0d1117;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+.moves-box .label {
+    font-size: 0.8rem;
+    color: #8b949e;
+    margin-right: 5px;
+}
+
+.moves-box .value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--light-color);
+}
+
+/* Grid Layout */
+#game-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-size), 1fr);
+    gap: var(--gap-size);
+    /* Ensure the grid is square */
+    width: min(100%, 400px);
+    height: min(100%, 400px);
+    margin: 0 auto;
+}
+
+/* Light Cell Styling */
+.light-cell {
+    width: 100%;
+    /* Use padding-bottom trick to maintain aspect ratio */
+    padding-bottom: 100%; 
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* State: OFF (Dark) */
+.light-cell.off {
+    background-color: var(--cell-off);
+    border: 2px solid var(--cell-border);
+}
+
+/* State: ON (Light) */
+.light-cell.on {
+    background-color: var(--light-color);
+    border: 2px solid #ffaa00;
+    box-shadow: 0 0 15px rgba(255, 222, 89, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Interaction Feedback */
+.light-cell:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Buttons */
+button {
+    background-color: #3b82f6; /* Blue button */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #2563eb;
+}
+
+/* Modal Styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+    max-width: 350px;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.modal-content h2 {
+    font-size: 3rem;
+    color: #10b981; /* Green color for win */
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 25px;
+}
+
+.modal-content #final-moves {
+    font-weight: bold;
+    color: var(--light-color);
+}
+
+.modal-content button {
+    background-color: #10b981;
+    width: 100%;
+    padding: 12px;
+}
+
+.modal-content button:hover {
+    background-color: #059669;
+}
