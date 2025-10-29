@@ -35,9 +35,8 @@ body {
     background: rgba(0, 0, 0, 0.7);
     border-radius: 24px;
     padding: 40px;
-    box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4), inset 0 0 16px rgba(0, 212, 255, 0.2);
-  
-    border: 1px solid rgba(0, 212, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 213, 255, 0.4), inset 0 0 16px rgba(218, 165, 32, 0.2);
+    border: 1px solid rgba(0, 255, 174, 0.3);
     transform-style: preserve-3d;
     animation: formEntrance 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
     opacity: 0;
@@ -59,13 +58,13 @@ body {
 }
 
 h2 {
-    color: #00d4ff;
+    color: #7fead6;
     text-align: center;
     margin-bottom: 10px;
     font-family: 'Cinzel', serif;
     font-weight: 700;
     letter-spacing: 3px;
-    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    text-shadow: 0 0 10px rgba(0, 255, 208, 0.5);
     animation: glow 2s infinite alternate;
     font-size: 24px;
 }
@@ -301,7 +300,7 @@ p {
 .input-field:valid ~ label {
     top: -12px;
     font-size: 12px;
-    color: #00d4ff;
+    color: #4ccfe9;
     text-shadow: 0 0 5px rgba(0, 212, 255, 0.5);
     letter-spacing: 1px;
 }

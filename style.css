@@ -1,17 +1,17 @@
 :root {
   color-scheme: dark;
-  --bg-900: #05070f;
-  --bg-800: #0b1020;
-  --bg-700: #111a2e;
+  --bg-900: #000000;
+  --bg-800: #ffffff;
+  --bg-700: #5c6739;
   --bg-600: rgba(24, 35, 56, 0.75);
   --primary: #58a6ff;
-  --primary-soft: rgba(88, 166, 255, 0.18);
-  --accent: #a855f7;
+  --primary-soft: rgba(234, 255, 42, 0.212);
+  --accent: #ddbf28;
   --accent-soft: rgba(168, 85, 247, 0.14);
   --text-100: #f5faff;
   --text-300: #c9d1d9;
   --text-500: #94a3b8;
-  --glass-border: rgba(148, 163, 184, 0.12);
+  --glass-border: rgba(53, 59, 68, 0.12);
   --ui-border: rgba(255,255,255,0.22); /* stronger white border in dark mode */
   --radius-lg: 24px;
   --radius-md: 16px;
