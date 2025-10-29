@@ -1,0 +1,24 @@
+/* 3. Custom Styles (for game) */
+body {
+    font-family: 'Inter', sans-serif;
+    /* Prevent scrolling on mobile */
+    touch-action: none;
+    overflow: hidden;
+    background-color: #111827; /* Dark background */
+}
+
+/* Center the game container */
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Canvas styling */
+canvas {
+    background-color: #0c0a18; /* Dark blue/purple canvas */
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
