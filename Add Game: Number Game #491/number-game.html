@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Tap Game</title>
+    <!-- 1. Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Use a modern, clean font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* This class prevents scrolling on mobile when tapping the canvas,
+         which is critical for playability.
+        */
+        .canvas-container {
+            touch-action: none;
+            max-width: 500px; /* Set a max size for large screens */
+            width: 95vw; /* Use viewport width for responsiveness */
+        }
+        
+        /* The canvas will be a perfect square */
+        #gameCanvas {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #f9fafb; /* bg-gray-50 */
+            border-radius: 0.75rem; /* rounded-xl */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+        }
+
+        /* Animation for a "wrong tap" shake */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <!-- Main Game Container -->
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Number Tap Challenge</h1>
+        
+        <!-- Stats Bar: Time and Score -->
+        <div class="flex justify-around mb-4 text-xl font-mono">
+            <div class="text-red-500">
+                Time: <span id="time-display" class="font-bold">30</span>s
+            </div>
+            <div class="text-blue-600">
+                Score: <span id="score-display" class="font-bold">0</span>
+            </div>
+        </div>
+
+        <!-- Canvas Container (for sizing and interaction) -->
+        <div class="canvas-container relative mx-auto">
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- Game Overlay (for Start/End messages) -->
+            <div id="game-overlay" class="absolute inset-0 bg-black bg-opacity-60 text-white flex flex-col items-center justify-center rounded-xl p-4">
+                <h2 id="game-message" class="text-2xl font-bold mb-4">Tap numbers in order!</h2>
+                <button id="start-btn" class="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 transition-all text-lg">
+                    Start Game
+                </button>
+            </div>
+        </div>
+        
+        <p class="mt-4 text-gray-500">
+            Tap the <span class="font-bold text-blue-600">highlighted</span> number in ascending order (1, 2, 3...)
+        </p>
+    </div>
+
+    <!-- 2. Game Logic Script -->
+    <script>
+        // === DOM Elements ===
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const timeEl = document.getElementById('time-display');
+        const scoreEl = document.getElementById('score-display');
+        const startBtn = document.getElementById('start-btn');
+        const overlay = document.getElementById('game-overlay');
+        const gameMessage = document.getElementById('game-message');
+
+        // === Game State ===
+        let numbers = []; // Array of { x, y, radius, value }
+        let currentTarget = 1;
+        let score = 0;
+        let timeLeft = 30;
+        let timerId = null;
+        let isPlaying = false;
+
+        // === Game Constants ===
+        const NUMBER_RADIUS = 22; // Radius of the number circles
+        const INITIAL_NUMBER_COUNT = 5; // How many numbers to show on screen at once
+        const GAME_TIME = 30; // Seconds
+
+        // === Initialization ===
+        
+        // Function to set canvas size based on its container
+        function resizeCanvas() {
+            // Get the actual computed size of the canvas element
+            const rect = canvas.getBoundingClientRect();
+            // Set the internal canvas resolution to match its displayed size
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            
+            // Redraw the game if it's in progress
+            if (isPlaying) {
+                drawNumbers();
+            }
+        }
+        
+        // Resize canvas on window resize
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Set initial canvas size on load
+        // We use a small timeout to let the page layout settle
+        setTimeout(resizeCanvas, 0);
+
+        // === Game Logic ===
+
+        /**
+         * Starts a new game
+         */
+        function startGame() {
+            // Reset game state
+            score = 0;
+            currentTarget = 1;
+            timeLeft = GAME_TIME;
+            isPlaying = true;
+            numbers = [];
+            
+            // Reset UI
+            scoreEl.textContent = score;
+            timeEl.textContent = timeLeft;
+            overlay.style.display = 'none'; // Hide overlay
+
+            // Spawn initial numbers
+            for (let i = 0; i < INITIAL_NUMBER_COUNT; i++) {
+                spawnNumber(currentTarget + i);
+            }
+            
+            drawNumbers(); // Initial draw
+
+            // Start game timer
+            clearInterval(timerId); // Clear any old timers
+            timerId = setInterval(() => {
+                timeLeft--;
+                timeEl.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        /**
+         * Ends the game
+         */
+        function endGame() {
+            isPlaying = false;
+            clearInterval(timerId);
+            
+            // Show game over message
+            gameMessage.textContent = `Game Over! Final Score: ${score}`;
+            startBtn.textContent = 'Restart Game';
+            overlay.style.display = 'flex';
+        }
+        
+        /**
+         * Creates a new number and adds it to the game board
+         * @param {number} value - The number to display (e.g., 1, 2, 3)
+         */
+        function spawnNumber(value) {
+            let x, y, overlap;
+            const radius = NUMBER_RADIUS;
+            const buffer = 10; // Extra space between circles
+
+            // Keep trying to find a non-overlapping spot
+            do {
+                overlap = false;
+                // Get random coordinates within canvas bounds
+                x = Math.random() * (canvas.width - radius * 2) + radius;
+                y = Math.random() * (canvas.height - radius * 2) + radius;
+
+                // Check for overlap with existing numbers
+                for (const num of numbers) {
+                    const dx = x - num.x;
+                    const dy = y - num.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    // If distance is less than two radii + buffer, it's an overlap
+                    if (distance < (radius * 2) + buffer) {
+                        overlap = true;
+                        break;
+                    }
+                }
+            } while (overlap);
+
+            // Add the new number to the array
+            numbers.push({ x, y, radius, value });
+        }
+
+        /**
+         * Main drawing function - clears and redraws all numbers on the canvas
+         */
+        function drawNumbers() {
+            if (!ctx) return; // Exit if canvas context isn't ready
+
+            // Clear the entire canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.font = `bold ${NUMBER_RADIUS * 0.9}px Inter`; // Dynamic font size
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            for (const num of numbers) {
+                ctx.beginPath();
+                ctx.arc(num.x, num.y, num.radius, 0, Math.PI * 2);
+
+                // Highlight the target number
+                if (num.value === currentTarget) {
+                    ctx.fillStyle = '#2563eb'; // Blue-600
+                    ctx.strokeStyle = '#1d4ed8'; // Blue-800
+                } else {
+                    ctx.fillStyle = '#e5e7eb'; // Gray-200
+                    ctx.strokeStyle = '#9ca3af'; // Gray-400
+                }
+                
+                ctx.fill();
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Draw the number text
+                ctx.fillStyle = (num.value === currentTarget) ? 'white' : 'black';
+                ctx.fillText(num.value, num.x, num.y);
+            }
+        }
+
+        /**
+         * Handles user click or tap events on the canvas
+         * @param {Event} e - The mouse or touch event
+         */
+        function handleTap(e) {
+            if (!isPlaying) return;
+
+            // Get tap coordinates relative to the canvas
+            const rect = canvas.getBoundingClientRect();
+            
+            // Handle both touch and mouse events
+            // Use changedTouches for 'touchend' if preferred, but 'touchstart' is more responsive
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            // Scale coordinates from CSS pixels to canvas resolution
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const x = (clientX - rect.left) * scaleX;
+            const y = (clientY - rect.top) * scaleY;
+
+            let clickedIndex = -1;
+
+            // Check if the tap hit a number (iterate in reverse)
+            for (let i = numbers.length - 1; i >= 0; i--) {
+                const num = numbers[i];
+                const dx = x - num.x;
+                const dy = y - num.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < num.radius) {
+                    clickedIndex = i;
+                    break;
+                }
+            }
+
+            if (clickedIndex !== -1) {
+                const clickedNumber = numbers[clickedIndex];
+                
+                if (clickedNumber.value === currentTarget) {
+                    // --- Correct Tap! ---
+                    score++;
+                    currentTarget++;
+                    scoreEl.textContent = score;
+
+                    // Remove the clicked number
+                    numbers.splice(clickedIndex, 1);
+
+                    // Spawn the next number in the sequence
+                    const nextValue = currentTarget + (INITIAL_NUMBER_COUNT - 1);
+                    spawnNumber(nextValue);
+
+                } else {
+                    // --- Wrong Tap! ---
+                    // Add a penalty (e.g., lose time)
+                    timeLeft = Math.max(0, timeLeft - 2); // Lose 2 seconds
+                    timeEl.textContent = timeLeft;
+                    
+                    // Add visual "shake" feedback
+                    canvas.classList.add('shake');
+                    setTimeout(() => canvas.classList.remove('shake'), 300);
+                }
+            }
+            
+            // Redraw the canvas after every tap
+            drawNumbers();
+        }
+
+        // === Event Listeners ===
+        startBtn.addEventListener('click', startGame);
+        
+        // Use 'mousedown' for desktop
+        canvas.addEventListener('mousedown', handleTap);
+        
+        // Use 'touchstart' for mobile
+        canvas.addEventListener('touchstart', (e) => {
+            // preventDefault stops the browser from also firing a 'mousedown' event
+            // and prevents scrolling/zooming.
+            e.preventDefault();
+            handleTap(e);
+        });
+
+    </script>
+</body>
+</html>
