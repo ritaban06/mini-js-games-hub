@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannon Physics Challenge</title>
+    <!-- Load Tailwind CSS for UI styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Matter.js Physics Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
+    <style>
+        body {
+            /* Full dark background */
+            background-color: #1f2937; 
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        #viewport {
+            /* Container for the Matter.js canvas */
+            border: 4px solid #f97316; /* Orange border */
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="text-3xl font-bold text-yellow-300 mb-4">Physics Cannon Challenge</h1>
+
+    <!-- Matter.js Canvas will be injected into this div -->
+    <div id="viewport" class="w-[800px] h-[600px]"></div>
+
+    <!-- Controls and Score -->
+    <div class="flex space-x-4">
+        <button id="reset-button" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition duration-200 shadow-md">
+            Reset Challenge
+        </button>
+        <p class="text-xl text-white py-3">
+            Shots Fired: <span id="shots-counter" class="font-extrabold text-cyan-400">0</span>
+        </p>
+    </div>
+
+    <script>
+        // --- Matter.js Setup ---
+        const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Events } = Matter;
+
+        // Configuration
+        const VIEWPORT_WIDTH = 800;
+        const VIEWPORT_HEIGHT = 600;
+        const WALL_THICKNESS = 50;
+        const SHOT_POWER_FACTOR = 0.05;
+
+        // Initialize Engine
+        const engine = Engine.create();
+        const world = engine.world;
+        world.gravity.y = 1; // Standard gravity
+
+        // Initialize Renderer
+        const render = Render.create({
+            element: document.getElementById('viewport'),
+            engine: engine,
+            options: {
+                width: VIEWPORT_WIDTH,
+                height: VIEWPORT_HEIGHT,
+                wireframes: false, // Use solid shapes
+                background: '#2d3748' // Dark blue-gray background
+            }
+        });
+
+        Render.run(render);
+
+        // Initialize Runner
+        const runner = Runner.create();
+        Runner.run(runner, engine);
+        
+        // --- Game State ---
+        let shotsFired = 0;
+        let shotsCounter = document.getElementById('shots-counter');
+        let cannonBall = null;
+
+        // --- Core Game Functions ---
+
+        function createBoundaries() {
+            const ground = Bodies.rectangle(VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT - WALL_THICKNESS / 2, VIEWPORT_WIDTH, WALL_THICKNESS, { isStatic: true, label: 'ground', render: { fillStyle: '#34d399' } });
+            
+            // Invisible walls to keep objects in the viewport
+            const leftWall = Bodies.rectangle(-WALL_THICKNESS / 2, VIEWPORT_HEIGHT / 2, WALL_THICKNESS, VIEWPORT_HEIGHT, { isStatic: true, render: { fillStyle: 'transparent' } });
+            const rightWall = Bodies.rectangle(VIEWPORT_WIDTH + WALL_THICKNESS / 2, VIEWPORT_HEIGHT / 2, WALL_THICKNESS, VIEWPORT_HEIGHT, { isStatic: true, render: { fillStyle: 'transparent' } });
+
+            World.add(world, [ground, leftWall, rightWall]);
+        }
+        
+        function createBlockTower() {
+            const stack = Matter.Composites.stack(550, 0, 4, 8, 0, 0, (x, y) => {
+                // Creates a stack of rectangular blocks
+                return Bodies.rectangle(x, y, 40, 40, { 
+                    restitution: 0.8, // Bounciness
+                    density: 0.001,   // Weight
+                    friction: 0.5,
+                    render: { fillStyle: '#fcd34d', strokeStyle: '#b45309' } // Yellow
+                });
+            });
+            World.add(world, stack);
+        }
+
+        function createCannon() {
+            // Invisible static body to define the launch point
+            const launcher = Bodies.circle(100, VIEWPORT_HEIGHT - 100, 10, { 
+                isStatic: true, 
+                render: { fillStyle: '#f97316' } 
+            });
+            World.add(world, launcher);
+            return launcher;
+        }
+
+        function fireCannonBall(startX, startY, endX, endY) {
+            // Remove previous cannonball if it exists
+            if (cannonBall) {
+                World.remove(world, cannonBall);
+            }
+            
+            // 1. Create the new ball body
+            cannonBall = Bodies.circle(startX, startY, 15, {
+                restitution: 0.9,
+                density: 0.005,
+                render: { fillStyle: '#ef4444' } // Red ball
+            });
+            
+            World.add(world, cannonBall);
+            shotsFired++;
+            shotsCounter.textContent = shotsFired;
+
+            // 2. Calculate the force vector
+            // The force is opposite the direction of the mouse drag
+            const deltaX = startX - endX;
+            const deltaY = startY - endY;
+            
+            // Apply a controlled force based on the drag distance
+            const force = {
+                x: deltaX * SHOT_POWER_FACTOR,
+                y: deltaY * SHOT_POWER_FACTOR
+            };
+
+            // 3. Apply the force to the center of the cannonball
+            Matter.Body.applyForce(cannonBall, cannonBall.position, force);
+            
+            // 4. Set the cannonBall as non-static so it moves
+            Matter.Body.setStatic(cannonBall, false);
+        }
+
+        // --- Input Handling (Mouse) ---
+        
+        let isDragging = false;
+        let dragStart = { x: 0, y: 0 };
+        const cannonLauncher = createCannon();
+
+        const mouse = Mouse.create(render.canvas);
+        const mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: { visible: false }
+            }
+        });
+        
+        // Prevent Matter.js from capturing mouse events on the button
+        mouseConstraint.mouse.element.removeEventListener("mousedown", mouseConstraint.mouse.mousedown);
+        mouseConstraint.mouse.element.removeEventListener("mousemove", mouseConstraint.mouse.mousemove);
+        mouseConstraint.mouse.element.removeEventListener("mouseup", mouseConstraint.mouse.mouseup);
+        
+        // Custom Mouse Events for Firing
+        render.canvas.addEventListener('mousedown', (e) => {
+            if (!isDragging) {
+                isDragging = true;
+                dragStart.x = e.offsetX;
+                dragStart.y = e.offsetY;
+            }
+        });
+
+        render.canvas.addEventListener('mouseup', (e) => {
+            if (isDragging) {
+                // Only fire if the click started near the launcher
+                const dx = dragStart.x - cannonLauncher.position.x;
+                const dy = dragStart.y - cannonLauncher.position.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 50) { // Limit drag start distance
+                    fireCannonBall(cannonLauncher.position.x, cannonLauncher.position.y, e.offsetX, e.offsetY);
+                } else {
+                    console.log("Too far from launcher to start drag.");
+                }
+
+                isDragging = false;
+            }
+        });
+
+        // --- Reset Logic ---
+
+        function resetGame() {
+            World.clear(world, false); // Clear bodies but keep static bodies
+            Engine.clear(engine);
+
+            // Re-initialize game state
+            shotsFired = 0;
+            shotsCounter.textContent = shotsFired;
+            cannonBall = null;
+            
+            // Re-add static elements and the tower
+            createBoundaries();
+            createBlockTower();
+            createCannon();
+            
+            // Re-run the engine
+            Runner.run(runner, engine);
+        }
+
+        document.getElementById('reset-button').addEventListener('click', resetGame);
+
+        // --- Start the Game ---
+        resetGame(); // Initial setup
+    </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 > [!NOTE]
-> All issues & PRs from **10 PM Kolkata, India time** will be closed automatically as per the **Open Odyssey** event rules.
+> All issues & PRs raised after **10 PM Kolkata, India time** will not be considered as per the **Open Odyssey** event rules.
 
 
 # 🎮 Mini JS Games Hub

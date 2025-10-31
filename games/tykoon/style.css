@@ -1,0 +1,87 @@
+/* General Styling */
+body {
+    background-color: #212529; /* Dark background */
+    color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+#game-wrapper {
+    display: grid;
+    grid-template-areas: 
+        "menu dashboard"
+        "menu game-area";
+    grid-template-columns: 200px 1fr; /* Menu fixed width, game area flexible */
+    grid-gap: 20px;
+}
+
+/* --- UI Panels --- */
+#dashboard, #building-menu {
+    background-color: #343a40;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+#dashboard {
+    grid-area: dashboard;
+}
+
+#building-menu {
+    grid-area: menu;
+}
+
+.resource-item {
+    padding: 5px 0;
+    border-bottom: 1px dashed #495057;
+}
+
+/* Button Styling */
+.build-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.build-button:hover {
+    background-color: #0056b3;
+}
+
+.build-button.active-tool {
+    background-color: #28a745; /* Highlight the currently selected tool */
+}
+
+
+/* --- Game Grid Area --- */
+#game-container {
+    grid-area: game-area;
+    display: flex;
+    flex-wrap: wrap; /* Allows tiles to form a continuous grid */
+    border: 3px solid #6c757d;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+}
+
+/* Grid Tile Styling */
+.grid-tile {
+    /* Dimensions set by JavaScript based on TILE_WIDTH */
+    border: 1px solid #495057; 
+    box-sizing: border-box; /* Ensures padding/border don't affect width/height */
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.grid-tile:hover {
+    border: 1px solid #ffffff; /* Highlight on hover */
+}

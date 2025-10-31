@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Sequence Guessing Game</title>
+    <!-- Load Tailwind CSS for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'guess-green': '#10b981',
+                        'guess-yellow': '#f59e0b',
+                        'guess-red': '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom animations */
+        @keyframes pop-in {
+            0% { transform: scale(0.5); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        .guess-row {
+            animation: pop-in 0.3s ease-out;
+        }
+        .color-dot {
+            transition: transform 0.1s;
+        }
+        .color-dot:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-lg bg-gray-800 p-6 rounded-xl shadow-2xl">
+        <h1 class="text-3xl font-bold text-center mb-6 text-indigo-400">Master Color</h1>
+        
+        <!-- Game Area and History -->
+        <div id="history-container" class="space-y-3 mb-6 max-h-80 overflow-y-auto pr-2">
+            <!-- Guess rows will be injected here -->
+        </div>
+
+        <!-- Hidden Target Sequence (for Game Over) -->
+        <div id="target-display" class="hidden justify-center space-x-2 p-3 bg-gray-700 rounded-lg mb-4">
+            <h3 class="font-semibold mr-2">Secret Code:</h3>
+        </div>
+
+        <!-- Current Guess Area -->
+        <div class="bg-gray-700 p-4 rounded-lg shadow-inner">
+            <h3 class="text-xl font-semibold mb-3">Your Guess (Moves: <span id="moves-counter">0</span>/10)</h3>
+            
+            <div id="current-guess-dots" class="flex justify-center space-x-3 mb-4">
+                <!-- Editable guess dots injected by JS -->
+            </div>
+            
+            <!-- Color Palette Selection -->
+            <div id="palette" class="flex justify-center space-x-3 mb-4">
+                <div class="color-dot w-8 h-8 rounded-full bg-guess-red shadow-lg" data-color="guess-red"></div>
+                <div class="color-dot w-8 h-8 rounded-full bg-guess-green shadow-lg" data-color="guess-green"></div>
+                <div class="color-dot w-8 h-8 rounded-full bg-blue-500 shadow-lg" data-color="blue-500"></div>
+                <div class="color-dot w-8 h-8 rounded-full bg-yellow-500 shadow-lg" data-color="yellow-500"></div>
+                <div class="color-dot w-8 h-8 rounded-full bg-purple-500 shadow-lg" data-color="purple-500"></div>
+                <div class="color-dot w-8 h-8 rounded-full bg-pink-500 shadow-lg" data-color="pink-500"></div>
+            </div>
+
+            <div class="flex justify-between space-x-2">
+                <button id="submit-button" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 font-bold rounded-lg transition duration-200 shadow-md disabled:bg-gray-500">Submit Guess</button>
+                <button id="restart-button" class="py-3 px-4 bg-gray-600 hover:bg-gray-700 font-semibold rounded-lg transition duration-200">Restart</button>
+            </div>
+        </div>
+
+        <!-- Status Message -->
+        <p id="status-message" class="mt-4 text-center text-lg h-6"></p>
+
+    </div>
+
+    <script>
+        // --- Game Constants and State ---
+        const CODE_LENGTH = 4;
+        const MAX_MOVES = 10;
+        const COLOR_OPTIONS = ['guess-red', 'guess-green', 'blue-500', 'yellow-500', 'purple-500', 'pink-500'];
+        
+        let secretCode = [];
+        let currentGuess = Array(CODE_LENGTH).fill(null); // [null, null, null, null]
+        let currentDotIndex = 0;
+        let moves = 0;
+        let gameActive = true;
+
+        // --- DOM Elements ---
+        const historyContainer = document.getElementById('history-container');
+        const guessDotsContainer = document.getElementById('current-guess-dots');
+        const paletteContainer = document.getElementById('palette');
+        const submitButton = document.getElementById('submit-button');
+        const restartButton = document.getElementById('restart-button');
+        const movesCounter = document.getElementById('moves-counter');
+        const statusMessage = document.getElementById('status-message');
+        const targetDisplay = document.getElementById('target-display');
+
+        // --- Initialization ---
+
+        function initializeGame() {
+            // 1. Generate the Secret Code
+            secretCode = Array.from({ length: CODE_LENGTH }, () => 
+                COLOR_OPTIONS[Math.floor(Math.random() * COLOR_OPTIONS.length)]
+            );
+            console.log('Secret Code:', secretCode); 
+
+            // 2. Reset State
+            currentGuess = Array(CODE_LENGTH).fill(null);
+            currentDotIndex = 0;
+            moves = 0;
+            gameActive = true;
+            
+            // 3. Clear UI
+            historyContainer.innerHTML = '';
+            targetDisplay.innerHTML = '<h3 class="font-semibold mr-2">Secret Code:</h3>';
+            targetDisplay.classList.add('hidden');
+            statusMessage.textContent = 'Select your colors and submit!';
+            submitButton.disabled = true;
+            movesCounter.textContent = moves;
+
+            // 4. Draw Current Guess Dots
+            drawCurrentGuessDots();
+        }
+
+        function drawCurrentGuessDots() {
+            guessDotsContainer.innerHTML = '';
+            currentGuess.forEach((color, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('color-dot', 'w-10', 'h-10', 'rounded-full', 'border-4', 'border-gray-500', 'shadow-inner', 'transition-colors');
+                
+                // Set the current color or default placeholder color
+                dot.style.backgroundColor = color ? tailwind.config.theme.extend.colors[color] || color : '#4b5563'; 
+                dot.dataset.index = index;
+                
+                // Add visual indicator for the active slot
+                if (index === currentDotIndex) {
+                    dot.classList.add('ring-4', 'ring-indigo-400');
+                }
+                
+                dot.addEventListener('click', () => {
+                    if (gameActive) {
+                        currentDotIndex = index;
+                        drawCurrentGuessDots(); // Redraw to update the active indicator
+                    }
+                });
+
+                guessDotsContainer.appendChild(dot);
+            });
+            // Check if submission is possible
+            submitButton.disabled = currentGuess.includes(null) || !gameActive;
+        }
+
+        // --- Game Logic ---
+
+        function handleColorSelection(event) {
+            if (!gameActive || currentGuess.includes(null)) return;
+            
+            const colorDot = event.target.closest('.color-dot');
+            if (!colorDot) return;
+            
+            const color = colorDot.dataset.color;
+            
+            // Apply color to the currently selected dot
+            currentGuess[currentDotIndex] = color;
+            
+            // Advance the pointer (loop back to 0 if at the end)
+            currentDotIndex = (currentDotIndex + 1) % CODE_LENGTH;
+
+            drawCurrentGuessDots();
+        }
+
+        function handleSubmitGuess() {
+            if (!gameActive || currentGuess.includes(null)) return;
+
+            moves++;
+            movesCounter.textContent = moves;
+            
+            const feedback = checkGuess(currentGuess, secretCode);
+            renderGuessRow(currentGuess, feedback);
+
+            // Check Win Condition
+            if (feedback.correctPosition === CODE_LENGTH) {
+                endGame(true);
+                return;
+            }
+
+            // Check Lose Condition
+            if (moves >= MAX_MOVES) {
+                endGame(false);
+                return;
+            }
+
+            // Reset guess for next move
+            currentGuess = Array(CODE_LENGTH).fill(null);
+            currentDotIndex = 0;
+            drawCurrentGuessDots();
+            statusMessage.textContent = 'Keep guessing! Hint: ' + (feedback.correctPosition > 0 ? 'You got ' + feedback.correctPosition + ' right.' : 'No positions correct.');
+        }
+
+        function checkGuess(guess, target) {
+            let correctPosition = 0;
+            let correctColor = 0;
+            const targetCopy = [...target];
+            const guessCopy = [...guess];
+
+            // Phase 1: Check for Correct Position (Green Pegs)
+            for (let i = 0; i < CODE_LENGTH; i++) {
+                if (guessCopy[i] === targetCopy[i]) {
+                    correctPosition++;
+                    // Mark as checked so they aren't counted in Phase 2
+                    guessCopy[i] = null;
+                    targetCopy[i] = null; 
+                }
+            }
+
+            // Phase 2: Check for Correct Color, Wrong Position (Yellow Pegs)
+            for (let i = 0; i < CODE_LENGTH; i++) {
+                if (guessCopy[i] !== null) {
+                    const targetIndex = targetCopy.findIndex(color => color === guessCopy[i]);
+                    if (targetIndex !== -1) {
+                        correctColor++;
+                        // Mark the target color as consumed
+                        targetCopy[targetIndex] = null; 
+                    }
+                }
+            }
+
+            return { correctPosition, correctColor };
+        }
+        
+        // --- Rendering History and Feedback ---
+
+        function renderGuessRow(guess, feedback) {
+            const row = document.createElement('div');
+            row.classList.add('guess-row', 'flex', 'justify-between', 'items-center', 'bg-gray-700', 'p-3', 'rounded-lg', 'shadow-md');
+            
+            // 1. Guess Dots
+            const guessGroup = document.createElement('div');
+            guessGroup.classList.add('flex', 'space-x-2');
+            guess.forEach(color => {
+                const dot = document.createElement('div');
+                dot.classList.add('w-6', 'h-6', 'rounded-full');
+                dot.style.backgroundColor = tailwind.config.theme.extend.colors[color] || color;
+                guessGroup.appendChild(dot);
+            });
+            row.appendChild(guessGroup);
+
+            // 2. Feedback Pegs
+            const feedbackGroup = document.createElement('div');
+            feedbackGroup.classList.add('flex', 'space-x-1');
+
+            // Correct Position (Green)
+            for (let i = 0; i < feedback.correctPosition; i++) {
+                const peg = document.createElement('div');
+                peg.classList.add('w-3', 'h-3', 'rounded-full', 'bg-guess-green');
+                feedbackGroup.appendChild(peg);
+            }
+            
+            // Correct Color, Wrong Position (Yellow)
+            for (let i = 0; i < feedback.correctColor; i++) {
+                const peg = document.createElement('div');
+                peg.classList.add('w-3', 'h-3', 'rounded-full', 'bg-guess-yellow');
+                feedbackGroup.appendChild(peg);
+            }
+
+            // Empty Pegs (Gray/Red)
+            const totalPegs = feedback.correctPosition + feedback.correctColor;
+            for (let i = totalPegs; i < CODE_LENGTH; i++) {
+                const peg = document.createElement('div');
+                peg.classList.add('w-3', 'h-3', 'rounded-full', 'bg-gray-500');
+                feedbackGroup.appendChild(peg);
+            }
+            
+            row.appendChild(feedbackGroup);
+            historyContainer.prepend(row); // Add newest guess to the top
+        }
+
+        // --- Game End ---
+
+        function endGame(won) {
+            gameActive = false;
+            submitButton.disabled = true;
+
+            // 1. Display the Secret Code
+            targetDisplay.classList.remove('hidden');
+            secretCode.forEach(color => {
+                const dot = document.createElement('div');
+                dot.classList.add('w-6', 'h-6', 'rounded-full', 'shadow-lg', 'border-2', 'border-gray-500');
+                dot.style.backgroundColor = tailwind.config.theme.extend.colors[color] || color;
+                targetDisplay.appendChild(dot);
+            });
+
+            // 2. Display Status
+            if (won) {
+                statusMessage.textContent = `🎉 You won in ${moves} moves! The code was cracked.`;
+                statusMessage.classList.add('text-guess-green');
+            } else {
+                statusMessage.textContent = '💔 Game Over. You ran out of moves.';
+                statusMessage.classList.add('text-guess-red');
+            }
+        }
+
+
+        // --- Event Listeners ---
+        paletteContainer.addEventListener('click', handleColorSelection);
+        submitButton.addEventListener('click', handleSubmitGuess);
+        restartButton.addEventListener('click', initializeGame);
+
+        // Start the game when the page loads
+        window.onload = initializeGame;
+    </script>
+</body>
+</html>

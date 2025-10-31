@@ -1,0 +1,14 @@
+/* style.css */
+body {
+    background-color: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+#gameCanvas {
+    border: 3px solid #64ffda; /* Neon green/teal border */
+    background-color: #000;
+    display: block;
+}
