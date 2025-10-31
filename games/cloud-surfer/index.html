@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Surfer - Aerial Surfing Adventure</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>☁️ Cloud Surfer</h1>
+            <div class="game-stats">
+                <div class="stat">Score: <span id="score">0</span></div>
+                <div class="stat">Lives: <span id="lives">3</span></div>
+                <div class="stat">Level: <span id="level">1</span></div>
+            </div>
+        </header>
+
+        <div class="game-area">
+            <div class="game-canvas-container">
+                <canvas id="gameCanvas"></canvas>
+                <div class="balance-meter">
+                    <div class="balance-bar">
+                        <div id="balance-indicator" class="balance-indicator"></div>
+                    </div>
+                    <div class="balance-labels">
+                        <span>Lean Left</span>
+                        <span>Balanced</span>
+                        <span>Lean Right</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="controls-info">
+                    <h3>Controls</h3>
+                    <div class="control-item">
+                        <span class="key">← →</span>
+                        <span>Move Left/Right</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">↑ ↓</span>
+                        <span>Maintain Balance</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">SPACE</span>
+                        <span>Jump to New Cloud</span>
+                    </div>
+                </div>
+
+                <div class="power-ups">
+                    <h3>Collectibles</h3>
+                    <div class="collectible-item">
+                        <span class="emoji">💧</span>
+                        <span>Raindrop (+10 points)</span>
+                    </div>
+                    <div class="collectible-item">
+                        <span class="emoji">⭐</span>
+                        <span>Star (+50 points)</span>
+                    </div>
+                    <div class="collectible-item">
+                        <span class="emoji">🌈</span>
+                        <span>Rainbow (+100 points)</span>
+                    </div>
+                    <div class="collectible-item">
+                        <span class="emoji">⚡</span>
+                        <span>Lightning (Danger!)</span>
+                    </div>
+                </div>
+
+                <div class="obstacles">
+                    <h3>Danger Zones</h3>
+                    <div class="obstacle-item">
+                        <span class="emoji">⛈️</span>
+                        <span>Thunderstorm</span>
+                    </div>
+                    <div class="obstacle-item">
+                        <span class="emoji">🌪️</span>
+                        <span>Tornado</span>
+                    </div>
+                    <div class="obstacle-item">
+                        <span class="emoji">❄️</span>
+                        <span>Hail Storm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <button id="start-button" class="control-button">Start Surfing</button>
+            <button id="pause-button" class="control-button">Pause</button>
+            <button id="restart-button" class="control-button">Restart</button>
+        </div>
+    </div>
+
+    <!-- Instructions Overlay -->
+    <div id="instructions-overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Welcome to Cloud Surfer!</h2>
+            <div class="instructions">
+                <p><strong>Your Mission:</strong></p>
+                <ul>
+                    <li>Ride clouds through the sky while maintaining balance</li>
+                    <li>Collect raindrops, stars, and rainbows for points</li>
+                    <li>Avoid thunderstorms, tornadoes, and hail storms</li>
+                    <li>Use arrow keys to move and maintain balance</li>
+                    <li>Press SPACE to jump to a new cloud when needed</li>
+                    <li>Keep the balance meter in the center to stay on clouds</li>
+                </ul>
+                <p><strong>Balance System:</strong></p>
+                <ul>
+                    <li>The balance meter shows your stability on the cloud</li>
+                    <li>Stay centered to maintain control</li>
+                    <li>Extreme tilting will cause you to fall off</li>
+                    <li>Collect items to stabilize your balance</li>
+                </ul>
+                <p><strong>Weather Conditions:</strong></p>
+                <ul>
+                    <li><span style="color: #87CEEB;">Clear skies</span> - Easy sailing with gentle winds</li>
+                    <li><span style="color: #708090;">Overcast</span> - Moderate difficulty with variable winds</li>
+                    <li><span style="color: #2F4F4F;">Stormy</span> - High difficulty with strong winds and lightning</li>
+                </ul>
+            </div>
+            <button id="start-game-button" class="start-button">Start Surfing!</button>
+        </div>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div id="game-over-overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Game Over!</h2>
+            <div id="final-stats" class="final-stats"></div>
+            <div class="game-over-options">
+                <button id="play-again-button" class="option-button">Play Again</button>
+                <button id="main-menu-button" class="option-button">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Complete Overlay -->
+    <div id="level-complete-overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Level Complete!</h2>
+            <div id="level-stats" class="level-stats"></div>
+            <button id="next-level-button" class="next-level-button">Next Level</button>
+        </div>
+    </div>
+
+    <!-- Pause Overlay -->
+    <div id="pause-overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Game Paused</h2>
+            <div class="pause-options">
+                <button id="resume-button" class="option-button">Resume</button>
+                <button id="restart-pause-button" class="option-button">Restart</button>
+                <button id="quit-button" class="option-button">Quit to Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
