@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnet Maze #998 - Mini JS Games Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <div id="ui-panel">
+            <div id="level">Level: 1</div>
+            <div id="moves">Moves: 0</div>
+            <div id="time">Time: 0.0s</div>
+            <div id="best-time">Best: --</div>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="controls-panel">
+            <div id="magnet-controls">
+                <h3>Magnet Controls</h3>
+                <div id="magnet-buttons"></div>
+            </div>
+            <div id="game-controls">
+                <button id="resetButton">Reset Level</button>
+                <button id="hintButton">Hint</button>
+            </div>
+        </div>
+
+        <div id="instructions-overlay">
+            <div class="instructions-content">
+                <h1>Magnet Maze #998</h1>
+                <p>Guide a metal ball through a magnetic maze by activating and deactivating magnets, avoiding traps in this physics puzzle!</p>
+
+                <h3>How to Play:</h3>
+                <ul>
+                    <li><strong>Goal:</strong> Guide the metal ball to the goal (green circle)</li>
+                    <li><strong>Magnets:</strong> Click magnet buttons to activate/deactivate magnetic fields</li>
+                    <li><strong>Physics:</strong> The ball responds to magnetic forces and gravity</li>
+                    <li><strong>Traps:</strong> Avoid red hazard zones and spikes</li>
+                    <li><strong>Moves:</strong> Minimize moves and time for higher scores</li>
+                    <li><strong>Reset:</strong> Use reset button if you get stuck</li>
+                </ul>
+
+                <h3>Magnet Types:</h3>
+                <ul>
+                    <li><strong>Attract:</strong> Pulls the ball toward the magnet</li>
+                    <li><strong>Repel:</strong> Pushes the ball away from the magnet</li>
+                    <li><strong>Rotate:</strong> Creates circular magnetic fields</li>
+                    <li><strong>Pulse:</strong> Alternating attract/repel forces</li>
+                </ul>
+
+                <button id="startButton">Start Magnetic Journey</button>
+            </div>
+        </div>
+
+        <div id="level-complete-overlay" style="display: none;">
+            <div class="level-complete-content">
+                <h2>Level Complete!</h2>
+                <p id="level-stats">Moves: 0 | Time: 0.0s</p>
+                <p id="level-score">Score: 0</p>
+                <p id="new-record" style="display: none;">🎉 New Best Time!</p>
+                <button id="nextLevelButton">Next Level</button>
+            </div>
+        </div>
+
+        <div id="game-over-overlay" style="display: none;">
+            <div class="game-over-content">
+                <h2>Ball Lost!</h2>
+                <p>Fell into a trap or went off-screen</p>
+                <button id="tryAgainButton">Try Again</button>
+            </div>
+        </div>
+
+        <div id="hint-overlay" style="display: none;">
+            <div class="hint-content">
+                <h3>Hint</h3>
+                <p id="hint-text">Try activating the magnets in this order...</p>
+                <button id="closeHintButton">Got it!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
