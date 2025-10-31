@@ -1,0 +1,19 @@
+/* style.css */
+body {
+    background-color: #282c34; /* Dark background */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars if any */
+    font-family: Arial, sans-serif;
+}
+
+#gameCanvas {
+    /* Set a border to visually distinguish the game area */
+    border: 3px solid #61afef; 
+    display: block; /* Important for margin: 0 auto (if not using flexbox) */
+    cursor: none; /* A common choice for mouse-controlled games */
+    background-color: #3e4451; /* Canvas background */
+}

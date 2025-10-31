@@ -1,0 +1,69 @@
+/* style.css */
+body {
+    background-color: #f0f0f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.game-info {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+/* --- Game Grid Layout --- */
+.memory-game {
+    width: 640px;
+    height: 640px;
+    display: flex;
+    flex-wrap: wrap; /* Allows cards to wrap into a grid */
+    perspective: 1000px; /* Gives the 3D space depth */
+}
+
+/* --- Individual Card Styling --- */
+.memory-card {
+    width: 25%; /* 4 cards per row (640px / 4 = 160px) */
+    height: 33.333%; /* Assuming 12 cards total (3 rows) */
+    margin: 5px; /* Spacing between cards */
+    position: relative;
+    transform: scale(1);
+    transform-style: preserve-3d; /* Key for 3D flip effect */
+    transition: transform 0.5s; /* Smooth animation time */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* Disable clicking during animation */
+.memory-card.no-click {
+    pointer-events: none;
+}
+
+/* --- The Flip Animation Trigger --- */
+.memory-card.is-flipped {
+    transform: rotateY(180deg);
+}
+
+/* --- Card Faces (Front and Back) --- */
+.front-face,
+.back-face {
+    width: 100%;
+    height: 100%;
+    padding: 5px; /* Padding for the image/content */
+    position: absolute;
+    border-radius: 5px;
+    background: #1c7a95; /* Blue/Teal back side */
+    backface-visibility: hidden; /* **Key**: Hides the back side when not flipped */
+}
+
+.front-face {
+    background: #e8e8e8; /* Light grey front side */
+    transform: rotateY(180deg); /* Start the front face rotated */
+}
+
+/* Example content/image styling */
+.front-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
