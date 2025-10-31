@@ -12,7 +12,7 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
     color: #eee;
     overflow: hidden;
 }
@@ -27,7 +27,7 @@ body {
     z-index: 5;
 }
 
-#score, #lives, #energy {
+#score, #level, #sequence {
     background-color: rgba(0, 0, 0, 0.7);
     color: #fff;
     padding: 10px 15px;
@@ -38,10 +38,26 @@ body {
 
 /* Canvas */
 canvas {
-    background: radial-gradient(ellipse at center, #0f0f23 0%, #1a1a2e 70%, #16213e 100%);
-    border: 3px solid #ff6b6b;
-    box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+    background: radial-gradient(circle at center, #0f0f23 0%, #1a1a2e 70%, #16213e 100%);
+    border: 3px solid #4a90e2;
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
     display: block;
+    cursor: pointer;
+}
+
+/* Click Indicator */
+#click-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #4a90e2;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 10;
 }
 
 /* Instructions Screen */
@@ -63,14 +79,14 @@ canvas {
     padding: 30px 40px;
     border-radius: 10px;
     text-align: center;
-    border: 2px solid #ff6b6b;
+    border: 2px solid #4a90e2;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     max-width: 500px;
 }
 
 #instructions-content h2 {
     font-size: 2.5rem;
-    color: #ff6b6b;
+    color: #4a90e2;
     margin-bottom: 15px;
     letter-spacing: 2px;
 }
@@ -102,20 +118,9 @@ canvas {
     margin-bottom: 8px;
 }
 
-/* Style for keys */
-#instructions-content code {
-    background-color: #ff6b6b;
-    color: #fff;
-    padding: 3px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.95rem;
-    margin-right: 8px;
-}
-
 /* Start Button */
 #startButton {
-    background-color: #ff6b6b;
+    background-color: #4a90e2;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -127,5 +132,5 @@ canvas {
 }
 
 #startButton:hover {
-    background-color: #ff5252;
+    background-color: #357abd;
 }

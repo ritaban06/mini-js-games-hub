@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble Wrap Popper #997 - Mini JS Games Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <div id="ui-panel">
+            <div id="score">Score: 0</div>
+            <div id="level">Level: 1</div>
+            <div id="timer">Time: 30.0s</div>
+            <div id="accuracy">Accuracy: 100%</div>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="level-info">
+            <div id="level-title">Level 1: Grid</div>
+            <div id="level-description">Pop all bubbles as fast as possible!</div>
+        </div>
+
+        <div id="instructions-overlay">
+            <div class="instructions-content">
+                <h1>Bubble Wrap Popper #997</h1>
+                <p>Pop virtual bubble wrap in increasingly complex patterns! Score points for speed and accuracy in this stress-relieving clicker game.</p>
+
+                <h3>How to Play:</h3>
+                <ul>
+                    <li><strong>Click:</strong> Click on bubbles to pop them</li>
+                    <li><strong>Goal:</strong> Pop all bubbles in each level as quickly as possible</li>
+                    <li><strong>Scoring:</strong> Faster completion = higher score bonus</li>
+                    <li><strong>Accuracy:</strong> Missing bubbles reduces your score</li>
+                    <li><strong>Levels:</strong> Each level introduces new patterns and challenges</li>
+                </ul>
+
+                <h3>Level Types:</h3>
+                <ul>
+                    <li><strong>Grid:</strong> Simple grid of bubbles</li>
+                    <li><strong>Spiral:</strong> Bubbles arranged in a spiral pattern</li>
+                    <li><strong>Heart:</strong> Heart-shaped bubble arrangement</li>
+                    <li><strong>Random:</strong> Chaotic bubble placement</li>
+                    <li><strong>Wave:</strong> Sine wave pattern</li>
+                    <li><strong>Circle:</strong> Concentric circles</li>
+                    <li><strong>Lightning:</strong> Zigzag lightning bolt pattern</li>
+                    <li><strong>Star:</strong> Star-shaped formation</li>
+                </ul>
+
+                <button id="startButton">Start Popping!</button>
+            </div>
+        </div>
+
+        <div id="level-complete-overlay" style="display: none;">
+            <div class="level-complete-content">
+                <h2>Level Complete!</h2>
+                <p id="level-score">Level Score: 0</p>
+                <p id="time-bonus">Time Bonus: +0</p>
+                <p id="accuracy-bonus">Accuracy Bonus: +0</p>
+                <p id="total-score">Total Score: 0</p>
+                <button id="nextLevelButton">Next Level</button>
+            </div>
+        </div>
+
+        <div id="game-over-overlay" style="display: none;">
+            <div class="game-over-content">
+                <h2>Time's Up!</h2>
+                <p id="final-score">Final Score: 0</p>
+                <p id="final-level">Reached Level: 1</p>
+                <button id="restartButton">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

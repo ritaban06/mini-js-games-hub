@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Factory Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-wrapper">
+        
+        <div id="dashboard">
+            <h3>💰 Resources</h3>
+            <div class="resource-item">Money: $<span id="money">500.00</span></div>
+            <div class="resource-item">Ore: <span id="ore">0.0</span></div>
+            <div class="resource-item">Ingots: <span id="ingots">0.0</span></div>
+            <div class="resource-item">Products Sold: <span id="product">0</span></div>
+        </div>
+
+        <div id="building-menu">
+            <h3>🛠️ Build Menu</h3>
+            <button data-type="MINE" class="build-button active-tool">Mine ($100)</button>
+            <button data-type="CONVEYOR" class="build-button">Conveyor ($10)</button>
+            <button data-type="FURNACE" class="build-button">Furnace ($200)</button>
+            <button data-type="SELLER" class="build-button">Seller ($50)</button>
+            
+            <p>Current Tool: <strong id="current-tool">MINE</strong></p>
+        </div>
+        
+        <div id="game-container">
+            </div>
+
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>

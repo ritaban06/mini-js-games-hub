@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Traveler #996 - Mini JS Games Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <div id="ui-panel">
+            <div id="era-display">Era: Prehistoric</div>
+            <div id="artifacts-collected">Artifacts: 0/5</div>
+            <div id="time-energy">Time Energy: 100</div>
+            <div id="score">Score: 0</div>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="power-bar-container">
+            <div id="power-bar"></div>
+        </div>
+
+        <div id="instructions-overlay">
+            <div class="instructions-content">
+                <h1>Time Traveler #996</h1>
+                <p>Jump through historical eras, collect artifacts, and solve time-based puzzles while avoiding paradoxes!</p>
+
+                <h3>How to Play:</h3>
+                <ul>
+                    <li><strong>Move:</strong> Arrow keys or WASD</li>
+                    <li><strong>Jump:</strong> Spacebar</li>
+                    <li><strong>Time Jump:</strong> Hold mouse button to charge, release to jump through time</li>
+                    <li><strong>Collect:</strong> Touch artifacts to collect them</li>
+                    <li><strong>Avoid:</strong> Paradoxes (red swirling portals) and obstacles</li>
+                    <li><strong>Goal:</strong> Collect all artifacts in each era and reach the time portal</li>
+                </ul>
+
+                <h3>Eras:</h3>
+                <ul>
+                    <li>Prehistoric - Dinosaurs and ancient artifacts</li>
+                    <li>Ancient Egypt - Pyramids and hieroglyphs</li>
+                    <li>Medieval - Castles and knights</li>
+                    <li>Industrial Revolution - Factories and steam engines</li>
+                    <li>Future - High-tech cities and robots</li>
+                </ul>
+
+                <button id="startButton">Start Time Travel</button>
+            </div>
+        </div>
+
+        <div id="game-over-overlay" style="display: none;">
+            <div class="game-over-content">
+                <h2>Paradox Created!</h2>
+                <p id="final-score">Final Score: 0</p>
+                <button id="restartButton">Try Again</button>
+            </div>
+        </div>
+
+        <div id="level-complete-overlay" style="display: none;">
+            <div class="level-complete-content">
+                <h2>Era Complete!</h2>
+                <p id="era-bonus">Time Jump Bonus: +500</p>
+                <button id="nextEraButton">Next Era</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

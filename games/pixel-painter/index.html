@@ -1,51 +1,43 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pixel Painter - Mini JS Games Hub</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Painter</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="game-wrap" role="region" aria-label="Pixel Painter game container">
-    <h1>Pixel Painter</h1>
-    <div class="game-area">
-      <div class="reference">
-        <h3>Reference</h3>
-        <canvas id="refCanvas" width="160" height="160"></canvas>
-      </div>
-      <div class="player">
-        <h3>Your Painting</h3>
-        <canvas id="playerCanvas" width="160" height="160"></canvas>
-        <div class="controls">
-          <button id="zoomIn">+</button>
-          <button id="zoomOut">-</button>
-          <button id="undo">Undo</button>
-          <button id="reset">Reset</button>
+
+    <div id="instructions-overlay">
+        <div id="instructions-content">
+            <h2>PIXEL PAINTER</h2>
+            <p>Use your cursor to "paint" by hitting colored pixel blocks, creating artwork while racing against a timer!</p>
+
+            <h3>Controls:</h3>
+            <ul>
+                <li><code>Mouse</code> - Move cursor</li>
+                <li><code>Click</code> or <code>Space</code> - Paint pixels</li>
+                <li><code>R</code> - Reset canvas</li>
+            </ul>
+
+            <button id="startButton">Start Painting</button>
         </div>
-      </div>
-      <div class="tools">
-        <h3>Tools</h3>
-        <button class="tool active" data-tool="brush">Brush</button>
-        <button class="tool" data-tool="bucket">Bucket</button>
-        <div class="colors">
-          <div class="color" data-color="#000000" style="background:#000"></div>
-          <div class="color" data-color="#ffffff" style="background:#fff"></div>
-          <div class="color" data-color="#ff0000" style="background:#f00"></div>
-          <div class="color" data-color="#00ff00" style="background:#0f0"></div>
-          <div class="color" data-color="#0000ff" style="background:#00f"></div>
-          <div class="color" data-color="#ffff00" style="background:#ff0"></div>
-        </div>
-      </div>
     </div>
-    <div class="info">
-      <p id="moves">Moves: 0</p>
-      <p id="accuracy">Accuracy: 0%</p>
-      <p id="score">Score: 0</p>
-      <p id="status">Paint the reference using minimal moves!</p>
+
+    <div id="game-ui">
+        <div id="score">Pixels Painted: 0</div>
+        <div id="timer">Time: 60</div>
+        <div id="color">Current Color: Red</div>
     </div>
-    <footer>Made for Mini JS Games Hub</footer>
-  </div>
-  <script src="script.js"></script>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <script src="script.js"></script>
 </body>
+</html>
 </html>

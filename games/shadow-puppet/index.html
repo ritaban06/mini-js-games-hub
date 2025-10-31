@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Puppet - Mini JS Games Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&family=Special+Elite&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <div id="ui-panel">
+            <div id="level">Level: 1</div>
+            <div id="moves">Moves: 0</div>
+            <div id="light-level">Light: 0%</div>
+            <div id="stealth">Stealth: Perfect</div>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="controls-panel">
+            <div id="action-controls">
+                <h3>Actions</h3>
+                <div id="action-buttons"></div>
+            </div>
+            <div id="game-controls">
+                <button id="resetButton">Reset Level</button>
+                <button id="hintButton">Hint</button>
+            </div>
+        </div>
+
+        <div id="instructions-overlay">
+            <div class="instructions-content">
+                <h1>Shadow Puppet #999</h1>
+                <p>Control shadow figures to evade light beams and reach goals, using darkness and light mechanics in this stealth-based game.</p>
+
+                <h3>How to Play:</h3>
+                <ul>
+                    <li><strong>Move:</strong> Click and drag your shadow puppet to move</li>
+                    <li><strong>Goal:</strong> Reach the glowing goal while staying in shadows</li>
+                    <li><strong>Light Beams:</strong> Avoid red light beams that dissolve shadows</li>
+                    <li><strong>Darkness:</strong> Use action buttons to manipulate light and darkness</li>
+                    <li><strong>Stealth:</strong> Stay hidden from spotlights and security systems</li>
+                    <li><strong>Timing:</strong> Some lights move or pulse - time your movements</li>
+                </ul>
+
+                <h3>Shadow Actions:</h3>
+                <ul>
+                    <li><strong>Extinguish:</strong> Put out nearby light sources</li>
+                    <li><strong>Block:</strong> Create shadow barriers to block light beams</li>
+                    <li><strong>Phase:</strong> Temporarily become intangible to pass through lights</li>
+                    <li><strong>Merge:</strong> Combine with other shadows for special abilities</li>
+                </ul>
+
+                <button id="startButton">Enter the Shadows</button>
+            </div>
+        </div>
+
+        <div id="level-complete-overlay" style="display: none;">
+            <div class="level-complete-content">
+                <h2>Goal Reached!</h2>
+                <p id="level-stats">Moves: 0 | Light Exposure: 0%</p>
+                <p id="stealth-rating">Stealth Rating: Shadow Master</p>
+                <button id="nextLevelButton">Next Shadow</button>
+            </div>
+        </div>
+
+        <div id="game-over-overlay" style="display: none;">
+            <div class="game-over-content">
+                <h2>Dissolved by Light!</h2>
+                <p>Your shadow was caught in the light</p>
+                <button id="tryAgainButton">Try Again</button>
+            </div>
+        </div>
+
+        <div id="hint-overlay" style="display: none;">
+            <div class="hint-content">
+                <h3>Shadow Hint</h3>
+                <p id="hint-text">Use the extinguish action to darken the path ahead...</p>
+                <button id="closeHintButton">Understood</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

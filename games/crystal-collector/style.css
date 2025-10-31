@@ -12,7 +12,7 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
     color: #eee;
     overflow: hidden;
 }
@@ -27,7 +27,7 @@ body {
     z-index: 5;
 }
 
-#score, #lives, #energy {
+#score, #lives {
     background-color: rgba(0, 0, 0, 0.7);
     color: #fff;
     padding: 10px 15px;
@@ -38,9 +38,9 @@ body {
 
 /* Canvas */
 canvas {
-    background: radial-gradient(ellipse at center, #0f0f23 0%, #1a1a2e 70%, #16213e 100%);
-    border: 3px solid #ff6b6b;
-    box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+    background: linear-gradient(135deg, #4a2c1a 0%, #2d1810 50%, #1a0f08 100%);
+    border: 3px solid #8B4513;
+    box-shadow: 0 0 20px rgba(139, 69, 19, 0.3);
     display: block;
 }
 
@@ -63,14 +63,14 @@ canvas {
     padding: 30px 40px;
     border-radius: 10px;
     text-align: center;
-    border: 2px solid #ff6b6b;
+    border: 2px solid #8B4513;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     max-width: 500px;
 }
 
 #instructions-content h2 {
     font-size: 2.5rem;
-    color: #ff6b6b;
+    color: #FFD700;
     margin-bottom: 15px;
     letter-spacing: 2px;
 }
@@ -104,7 +104,7 @@ canvas {
 
 /* Style for keys */
 #instructions-content code {
-    background-color: #ff6b6b;
+    background-color: #8B4513;
     color: #fff;
     padding: 3px 6px;
     border-radius: 4px;
@@ -115,8 +115,8 @@ canvas {
 
 /* Start Button */
 #startButton {
-    background-color: #ff6b6b;
-    color: white;
+    background-color: #FFD700;
+    color: #000;
     border: none;
     padding: 12px 24px;
     font-size: 1.1rem;
@@ -127,5 +127,5 @@ canvas {
 }
 
 #startButton:hover {
-    background-color: #ff5252;
+    background-color: #FFA500;
 }
