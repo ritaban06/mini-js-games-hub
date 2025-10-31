@@ -1,0 +1,141 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to bottom, #b8eaff, #f5f9ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.game-container {
+  text-align: center;
+  background: #ffffffb3;
+  padding: 20px 30px;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(173, 216, 230, 0.6);
+}
+
+h1 {
+  color: #6ec9f0;
+  text-shadow: 0 2px 6px rgba(173, 216, 230, 0.5);
+  margin-bottom: 10px;
+}
+
+#gameArea {
+  position: relative;
+  width: 320px;
+  height: 450px;
+  background: linear-gradient(to bottom, #d7f0ff, #f0f8ff);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(173, 216, 230, 0.3);
+}
+
+#cloud {
+  position: absolute;
+  bottom: 10px;
+  left: 130px;
+  width: 60px;
+  height: 35px;
+  background: #ffffff;
+  border-radius: 50px;
+  box-shadow: 20px 0 #ffffff, -20px 0 #ffffff, 0 10px 20px rgba(173, 216, 230, 0.4);
+  /* remove transition so pointer and keyboard movement feel immediate */
+  transition: none;
+  /* hint to the browser that left may change often */
+  will-change: left;
+}
+
+.drop {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  top: 0;
+}
+
+.blue {
+  background: #6ec9f0;
+  box-shadow: 0 0 10px #a2e4ff;
+}
+
+.gray {
+  background: #a7a7a7;
+  box-shadow: 0 0 10px #cfcfcf;
+}
+
+#score {
+  margin-top: 15px;
+  color: #5ba8e2;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+#streak, #multStatus {
+  margin-top: 6px;
+  color: #3f8fbf;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* fixed time pill on the left of the window */
+#timeLeft {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  z-index: 9999;
+  background: rgba(255,255,255,0.92);
+  color: #1f6f9f;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(31,111,159,0.12);
+}
+
+.mult {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff9c4, #ffd54f);
+  box-shadow: 0 0 12px rgba(255,215,0,0.6);
+}
+
+.floatText {
+  position: absolute;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 8px;
+  pointer-events: none;
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 700ms ease-out, opacity 700ms ease-out;
+}
+
+.float-up {
+  transform: translateY(-40px);
+  opacity: 0;
+}
+
+#restartBtn {
+  margin-top: 10px;
+  background: #b6e4ff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #267dc4;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#restartBtn:hover {
+  background: #9ed9ff;
+  transform: scale(1.05);
+}
