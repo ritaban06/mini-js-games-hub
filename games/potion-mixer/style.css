@@ -1,0 +1,417 @@
+/* Potion Mixer Game Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    color: #e8e8e8;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    margin-bottom: 10px;
+}
+
+.game-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    font-weight: bold;
+}
+
+.game-area {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    gap: 20px;
+    min-height: 600px;
+}
+
+.ingredients-panel, .effects-panel {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.ingredients-panel h3, .effects-panel h3 {
+    color: #ffd700;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.ingredients-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.ingredient {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    cursor: grab;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-weight: bold;
+    position: relative;
+}
+
+.ingredient:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.ingredient.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+    cursor: grabbing;
+}
+
+.ingredient.herb {
+    border-color: #32cd32;
+    background: linear-gradient(45deg, rgba(50, 205, 50, 0.2), rgba(34, 139, 34, 0.2));
+}
+
+.ingredient.crystal {
+    border-color: #9370db;
+    background: linear-gradient(45deg, rgba(147, 112, 219, 0.2), rgba(106, 90, 205, 0.2));
+}
+
+.ingredient.essence {
+    border-color: #ffd700;
+    background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+}
+
+.ingredient.powder {
+    border-color: #cd853f;
+    background: linear-gradient(45deg, rgba(205, 133, 63, 0.2), rgba(160, 82, 45, 0.2));
+}
+
+.main-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#gameCanvas {
+    border: 3px solid rgba(255, 215, 0, 0.5);
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+}
+
+.cauldron-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.cauldron {
+    width: 150px;
+    height: 120px;
+    background: linear-gradient(45deg, #2c2c2c, #1a1a1a);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    position: relative;
+    border: 4px solid #8b4513;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.cauldron-liquid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: linear-gradient(180deg, #4169e1, #000080);
+    transition: height 0.5s ease;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+
+.bubbles {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+}
+
+.bubble {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: bubble 2s infinite ease-in-out;
+}
+
+.bubble:nth-child(1) { left: -20px; animation-delay: 0s; }
+.bubble:nth-child(2) { left: -10px; animation-delay: 0.5s; }
+.bubble:nth-child(3) { left: 10px; animation-delay: 1s; }
+.bubble:nth-child(4) { left: 20px; animation-delay: 1.5s; }
+
+@keyframes bubble {
+    0% { transform: translateY(0) scale(0); opacity: 1; }
+    50% { transform: translateY(-30px) scale(1); opacity: 0.8; }
+    100% { transform: translateY(-60px) scale(0); opacity: 0; }
+}
+
+.mix-button {
+    background: linear-gradient(45deg, #ffd700, #ff8c00);
+    color: #000;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.mix-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+.mix-button:active {
+    transform: translateY(0);
+}
+
+.effects-display {
+    min-height: 200px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.effect-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-left: 4px solid #ffd700;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.recipe-book {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.recipe-book h4 {
+    color: #ffd700;
+    margin-bottom: 10px;
+}
+
+.recipe-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.recipe-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.recipe-item.discovered {
+    border-left: 3px solid #32cd32;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.controls button {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e8e8e8;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.controls button:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Overlay Styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.overlay-content {
+    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+    border: 2px solid #ffd700;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+}
+
+.overlay-content h2 {
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.instructions {
+    margin-bottom: 30px;
+}
+
+.instructions ul {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.instructions li {
+    margin-bottom: 8px;
+}
+
+.ingredient-type {
+    font-weight: bold;
+}
+
+.start-button, .next-level-button {
+    background: linear-gradient(45deg, #ffd700, #ff8c00);
+    color: #000;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.start-button:hover, .next-level-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+/* Explosion Effect */
+.explosion-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: explosion 0.5s ease-out;
+}
+
+.explosion-text {
+    font-size: 5em;
+    color: #fff;
+    text-shadow: 0 0 20px #ff0000;
+    animation: explosionText 0.5s ease-out;
+}
+
+@keyframes explosion {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes explosionText {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-area {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .ingredients-panel, .effects-panel {
+        order: 2;
+    }
+
+    .main-game {
+        order: 1;
+    }
+
+    .game-stats {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .controls {
+        flex-wrap: wrap;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+}

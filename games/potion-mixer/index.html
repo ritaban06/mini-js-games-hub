@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potion Mixer - Magical Alchemy Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>🧪 Potion Mixer</h1>
+            <div class="game-stats">
+                <div class="stat">Level: <span id="level">1</span></div>
+                <div class="stat">Score: <span id="score">0</span></div>
+                <div class="stat">Potions: <span id="potions">0</span></div>
+            </div>
+        </header>
+
+        <div class="game-area">
+            <div class="ingredients-panel">
+                <h3>Ingredients</h3>
+                <div id="ingredients-container" class="ingredients-container">
+                    <!-- Ingredients will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="main-game">
+                <canvas id="gameCanvas"></canvas>
+
+                <div class="cauldron-area">
+                    <div id="cauldron" class="cauldron">
+                        <div class="cauldron-liquid" id="cauldron-liquid"></div>
+                        <div class="bubbles" id="bubbles"></div>
+                    </div>
+                    <button id="mix-button" class="mix-button">Mix Potion</button>
+                </div>
+            </div>
+
+            <div class="effects-panel">
+                <h3>Effects</h3>
+                <div id="effects-display" class="effects-display">
+                    <!-- Effects will be displayed here -->
+                </div>
+                <div class="recipe-book">
+                    <h4>Recipe Book</h4>
+                    <div id="recipe-list" class="recipe-list">
+                        <!-- Discovered recipes will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="hint-button">💡 Hint</button>
+            <button id="reset-button">🔄 Reset</button>
+            <button id="next-level-button">Next Level</button>
+        </div>
+    </div>
+
+    <!-- Instructions Overlay -->
+    <div id="instructions-overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Welcome to Potion Mixer!</h2>
+            <div class="instructions">
+                <p><strong>How to Play:</strong></p>
+                <ul>
+                    <li>Drag ingredients from the panel into the cauldron</li>
+                    <li>Mix potions by clicking the "Mix Potion" button</li>
+                    <li>Discover magical effects by experimenting with combinations</li>
+                    <li>Complete recipes to earn points and unlock new ingredients</li>
+                    <li>Watch out for dangerous combinations!</li>
+                </ul>
+                <p><strong>Ingredient Types:</strong></p>
+                <ul>
+                    <li><span class="ingredient-type herb">🌿 Herbs</span> - Natural magical plants</li>
+                    <li><span class="ingredient-type crystal">💎 Crystals</span> - Magical gemstones</li>
+                    <li><span class="ingredient-type essence">✨ Essences</span> - Pure magical energy</li>
+                    <li><span class="ingredient-type powder">🧂 Powders</span> - Ground magical substances</li>
+                </ul>
+            </div>
+            <button id="start-button" class="start-button">Start Mixing!</button>
+        </div>
+    </div>
+
+    <!-- Level Complete Overlay -->
+    <div id="level-complete-overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Level Complete!</h2>
+            <div id="level-stats" class="level-stats"></div>
+            <div id="new-recipes" class="new-recipes"></div>
+            <button id="next-level-button-overlay" class="next-level-button">Next Level</button>
+        </div>
+    </div>
+
+    <!-- Hint Overlay -->
+    <div id="hint-overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Hint</h2>
+            <p id="hint-text"></p>
+            <button id="close-hint-button">Got it!</button>
+        </div>
+    </div>
+
+    <!-- Explosion Effect -->
+    <div id="explosion-overlay" class="explosion-overlay">
+        <div class="explosion-text">💥 BOOM!</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
