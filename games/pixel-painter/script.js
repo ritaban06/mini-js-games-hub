@@ -1,211 +1,199 @@
-// Pixel Painter Game
-const refCanvas = document.getElementById('refCanvas');
-const playerCanvas = document.getElementById('playerCanvas');
-const refCtx = refCanvas.getContext('2d');
-const playerCtx = playerCanvas.getContext('2d');
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const startButton = document.getElementById('startButton');
+const instructionsOverlay = document.getElementById('instructions-overlay');
+const scoreElement = document.getElementById('score');
+const timerElement = document.getElementById('timer');
+const colorElement = document.getElementById('color');
 
-const gridSize = 16;
-const pixelSize = 10;
-let zoom = 1;
-let currentTool = 'brush';
-let currentColor = '#000000';
-let moves = 0;
-let undoStack = [];
+canvas.width = 800;
+canvas.height = 600;
 
-const refGrid = [
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-];
+const PIXEL_SIZE = 20;
+const GRID_WIDTH = canvas.width / PIXEL_SIZE;
+const GRID_HEIGHT = canvas.height / PIXEL_SIZE;
 
-// Create a heart pattern
-for (let i = 4; i < 12; i++) {
-  for (let j = 4; j < 12; j++) {
-    if ((i === 4 && j >= 6 && j <= 9) ||
-        (i === 5 && j >= 5 && j <= 10) ||
-        (i >= 6 && i <= 9 && j >= 4 && j <= 11) ||
-        (i === 10 && j >= 6 && j <= 9) ||
-        (i === 11 && j === 7 || j === 8)) {
-      refGrid[i][j] = 1;
+let gameRunning = false;
+let pixels = [];
+let cursor = { x: 0, y: 0 };
+let score = 0;
+let timeLeft = 60;
+let currentColor = '#ff0000';
+let gameTimer;
+let mouseDown = false;
+
+// Colors available
+const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff', '#000000'];
+let colorIndex = 0;
+
+// Initialize pixels grid
+function initPixels() {
+    pixels = [];
+    for (let y = 0; y < GRID_HEIGHT; y++) {
+        pixels[y] = [];
+        for (let x = 0; x < GRID_WIDTH; x++) {
+            pixels[y][x] = '#cccccc'; // Unpainted gray
+        }
     }
-  }
 }
 
-let playerGrid = Array.from({length: gridSize}, () => Array(gridSize).fill(0));
+// Draw everything
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-function drawGrid(ctx, grid, colors) {
-  ctx.clearRect(0, 0, 160, 160);
-  for (let i = 0; i < gridSize; i++) {
-    for (let j = 0; j < gridSize; j++) {
-      const color = colors ? colors[grid[i][j]] : (grid[i][j] ? '#000' : '#fff');
-      ctx.fillStyle = color;
-      ctx.fillRect(j * pixelSize * zoom, i * pixelSize * zoom, pixelSize * zoom, pixelSize * zoom);
-      ctx.strokeStyle = '#ddd';
-      ctx.lineWidth = 0.5;
-      ctx.strokeRect(j * pixelSize * zoom, i * pixelSize * zoom, pixelSize * zoom, pixelSize * zoom);
+    // Draw pixels
+    for (let y = 0; y < GRID_HEIGHT; y++) {
+        for (let x = 0; x < GRID_WIDTH; x++) {
+            ctx.fillStyle = pixels[y][x];
+            ctx.fillRect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+            ctx.strokeStyle = '#999';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+        }
     }
-  }
+
+    // Draw cursor
+    ctx.strokeStyle = currentColor;
+    ctx.lineWidth = 3;
+    ctx.strokeRect(cursor.x * PIXEL_SIZE, cursor.y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+
+    // Draw cursor crosshair
+    ctx.beginPath();
+    ctx.moveTo(cursor.x * PIXEL_SIZE + PIXEL_SIZE/2, cursor.y * PIXEL_SIZE);
+    ctx.lineTo(cursor.x * PIXEL_SIZE + PIXEL_SIZE/2, cursor.y * PIXEL_SIZE + PIXEL_SIZE);
+    ctx.moveTo(cursor.x * PIXEL_SIZE, cursor.y * PIXEL_SIZE + PIXEL_SIZE/2);
+    ctx.lineTo(cursor.x * PIXEL_SIZE + PIXEL_SIZE, cursor.y * PIXEL_SIZE + PIXEL_SIZE/2);
+    ctx.stroke();
 }
 
-function initGame() {
-  drawGrid(refCtx, refGrid, {0: '#fff', 1: '#f00'});
-  drawGrid(playerCtx, playerGrid, {0: '#fff', 1: '#000'});
-  updateUI();
-}
-
-function getGridPos(x, y) {
-  const rect = playerCanvas.getBoundingClientRect();
-  const scaleX = 160 / rect.width;
-  const scaleY = 160 / rect.height;
-  const canvasX = (x - rect.left) * scaleX;
-  const canvasY = (y - rect.top) * scaleY;
-  const gridX = Math.floor(canvasX / (pixelSize * zoom));
-  const gridY = Math.floor(canvasY / (pixelSize * zoom));
-  return {x: gridX, y: gridY};
-}
-
+// Paint pixel
 function paintPixel(x, y) {
-  if (x >= 0 && x < gridSize && y >= 0 && y < gridSize) {
-    saveState();
-    playerGrid[y][x] = currentColor === '#000000' ? 1 : 0; // Simplify to black/white
-    moves++;
-    drawGrid(playerCtx, playerGrid, {0: '#fff', 1: '#000'});
-    updateUI();
-  }
-}
-
-function floodFill(x, y, targetColor, replacementColor) {
-  if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) return;
-  if (playerGrid[y][x] !== targetColor) return;
-  playerGrid[y][x] = replacementColor;
-  floodFill(x + 1, y, targetColor, replacementColor);
-  floodFill(x - 1, y, targetColor, replacementColor);
-  floodFill(x, y + 1, targetColor, replacementColor);
-  floodFill(x, y - 1, targetColor, replacementColor);
-}
-
-function bucketFill(x, y) {
-  const target = playerGrid[y][x];
-  const replacement = currentColor === '#000000' ? 1 : 0;
-  if (target === replacement) return;
-  saveState();
-  floodFill(x, y, target, replacement);
-  moves++;
-  drawGrid(playerCtx, playerGrid, {0: '#fff', 1: '#000'});
-  updateUI();
-}
-
-function saveState() {
-  undoStack.push(JSON.parse(JSON.stringify(playerGrid)));
-  if (undoStack.length > 10) undoStack.shift();
-}
-
-function undo() {
-  if (undoStack.length > 0) {
-    playerGrid = undoStack.pop();
-    moves = Math.max(0, moves - 1);
-    drawGrid(playerCtx, playerGrid, {0: '#fff', 1: '#000'});
-    updateUI();
-  }
-}
-
-function calculateAccuracy() {
-  let correct = 0;
-  for (let i = 0; i < gridSize; i++) {
-    for (let j = 0; j < gridSize; j++) {
-      if (playerGrid[i][j] === refGrid[i][j]) correct++;
+    if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
+        if (pixels[y][x] === '#cccccc') { // Only paint unpainted pixels
+            pixels[y][x] = currentColor;
+            score++;
+            updateUI();
+        }
     }
-  }
-  return Math.round((correct / (gridSize * gridSize)) * 100);
 }
 
-function calculateScore() {
-  const accuracy = calculateAccuracy();
-  return moves > 0 ? Math.round((accuracy * 100) / moves) : 0;
+// Change color
+function changeColor() {
+    colorIndex = (colorIndex + 1) % colors.length;
+    currentColor = colors[colorIndex];
+    updateUI();
 }
 
+// Update UI
 function updateUI() {
-  document.getElementById('moves').textContent = 'Moves: ' + moves;
-  document.getElementById('accuracy').textContent = 'Accuracy: ' + calculateAccuracy() + '%';
-  document.getElementById('score').textContent = 'Score: ' + calculateScore();
+    scoreElement.textContent = `Pixels Painted: ${score}`;
+    timerElement.textContent = `Time: ${timeLeft}`;
+    const colorNames = ['Red', 'Green', 'Blue', 'Yellow', 'Magenta', 'Cyan', 'White', 'Black'];
+    colorElement.textContent = `Current Color: ${colorNames[colorIndex]}`;
+}
+
+// Game loop
+function gameLoop() {
+    if (!gameRunning) return;
+
+    draw();
+    requestAnimationFrame(gameLoop);
+}
+
+// Start game
+function startGame() {
+    gameRunning = true;
+    timeLeft = 60;
+    score = 0;
+    colorIndex = 0;
+    currentColor = colors[0];
+    initPixels();
+    updateUI();
+
+    gameTimer = setInterval(() => {
+        timeLeft--;
+        updateUI();
+        if (timeLeft <= 0) {
+            endGame();
+        }
+    }, 1000);
+
+    gameLoop();
+}
+
+// End game
+function endGame() {
+    gameRunning = false;
+    clearInterval(gameTimer);
+    alert(`Time's up! You painted ${score} pixels.`);
+}
+
+// Reset canvas
+function resetCanvas() {
+    initPixels();
+    score = 0;
+    updateUI();
 }
 
 // Event listeners
-playerCanvas.addEventListener('click', e => {
-  const pos = getGridPos(e.clientX, e.clientY);
-  if (currentTool === 'brush') {
-    paintPixel(pos.x, pos.y);
-  } else if (currentTool === 'bucket') {
-    bucketFill(pos.x, pos.y);
-  }
+startButton.addEventListener('click', () => {
+    instructionsOverlay.style.display = 'none';
+    startGame();
 });
 
-document.querySelectorAll('.tool').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tool').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentTool = btn.dataset.tool;
-  });
+canvas.addEventListener('mousemove', (e) => {
+    if (!gameRunning) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor((e.clientX - rect.left) / PIXEL_SIZE);
+    const y = Math.floor((e.clientY - rect.top) / PIXEL_SIZE);
+    cursor.x = Math.max(0, Math.min(GRID_WIDTH - 1, x));
+    cursor.y = Math.max(0, Math.min(GRID_HEIGHT - 1, y));
 });
 
-document.querySelectorAll('.color').forEach(c => {
-  c.addEventListener('click', () => {
-    document.querySelectorAll('.color').forEach(col => col.classList.remove('selected'));
-    c.classList.add('selected');
-    currentColor = c.dataset.color;
-  });
+canvas.addEventListener('mousedown', (e) => {
+    if (!gameRunning) return;
+    mouseDown = true;
+    paintPixel(cursor.x, cursor.y);
 });
 
-document.getElementById('zoomIn').addEventListener('click', () => {
-  zoom = Math.min(2, zoom + 0.5);
-  drawGrid(playerCtx, playerGrid, {0: '#fff', 1: '#000'});
+canvas.addEventListener('mouseup', () => {
+    mouseDown = false;
 });
 
-document.getElementById('zoomOut').addEventListener('click', () => {
-  zoom = Math.max(0.5, zoom - 0.5);
-  drawGrid(playerCtx, playerGrid, {0: '#fff', 1: '#000'});
+canvas.addEventListener('mousemove', (e) => {
+    if (!gameRunning || !mouseDown) return;
+    paintPixel(cursor.x, cursor.y);
 });
 
-document.getElementById('undo').addEventListener('click', undo);
+document.addEventListener('keydown', (e) => {
+    if (!gameRunning) return;
 
-document.getElementById('reset').addEventListener('click', () => {
-  playerGrid = Array.from({length: gridSize}, () => Array(gridSize).fill(0));
-  moves = 0;
-  undoStack = [];
-  drawGrid(playerCtx, playerGrid, {0: '#fff', 1: '#000'});
-  updateUI();
+    switch (e.code) {
+        case 'Space':
+            e.preventDefault();
+            paintPixel(cursor.x, cursor.y);
+            break;
+        case 'KeyR':
+            resetCanvas();
+            break;
+        case 'KeyC':
+            changeColor();
+            break;
+        case 'ArrowUp':
+            cursor.y = Math.max(0, cursor.y - 1);
+            break;
+        case 'ArrowDown':
+            cursor.y = Math.min(GRID_HEIGHT - 1, cursor.y + 1);
+            break;
+        case 'ArrowLeft':
+            cursor.x = Math.max(0, cursor.x - 1);
+            break;
+        case 'ArrowRight':
+            cursor.x = Math.min(GRID_WIDTH - 1, cursor.x + 1);
+            break;
+    }
 });
 
-document.addEventListener('keydown', e => {
-  if (e.key >= '1' && e.key <= '6') {
-    const colors = ['#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', '#ffff00'];
-    currentColor = colors[parseInt(e.key) - 1];
-    document.querySelectorAll('.color').forEach((c, i) => {
-      c.classList.toggle('selected', i === parseInt(e.key) - 1);
-    });
-  } else if (e.key === 'b') {
-    currentTool = 'brush';
-    document.querySelectorAll('.tool').forEach(b => b.classList.toggle('active', b.dataset.tool === 'brush'));
-  } else if (e.key === 'f') {
-    currentTool = 'bucket';
-    document.querySelectorAll('.tool').forEach(b => b.classList.toggle('active', b.dataset.tool === 'bucket'));
-  } else if (e.ctrlKey && e.key === 'z') {
-    e.preventDefault();
-    undo();
-  }
-});
-
-initGame();
+// Initialize
+initPixels();
+updateUI();

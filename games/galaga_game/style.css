@@ -1,0 +1,18 @@
+/* style.css */
+body {
+    background-color: #1a1a2e; /* Deep space color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+}
+
+#gameCanvas {
+    border: 5px solid #0f0; /* Classic green border for a retro look */
+    background-color: #000000; /* Black canvas */
+    display: block;
+    cursor: crosshair; /* Target-style cursor */
+}

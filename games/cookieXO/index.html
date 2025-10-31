@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie XO 💖</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🐻 Cookie XO 💕</h1>
+  <div class="game">
+    <div class="cell" data-index="0"></div>
+    <div class="cell" data-index="1"></div>
+    <div class="cell" data-index="2"></div>
+    <div class="cell" data-index="3"></div>
+    <div class="cell" data-index="4"></div>
+    <div class="cell" data-index="5"></div>
+    <div class="cell" data-index="6"></div>
+    <div class="cell" data-index="7"></div>
+    <div class="cell" data-index="8"></div>
+  </div>
+
+  <!-- Player choice overlay -->
+  <div id="choiceOverlay" class="overlay">
+    <div class="choiceCard">
+      <h2>Choose your side</h2>
+      <div class="choices">
+        <button id="chooseCross" class="choiceBtn">🩷 Cross (✿)</button>
+        <button id="chooseCircle" class="choiceBtn">💙 Circle (○)</button>
+      </div>
+      <p class="small">Cross always starts first.</p>
+    </div>
+  </div>
+
+  <div class="status">
+    <p id="statusText">Pick a side to start the game</p>
+    <p id="computerMsg" class="computer-msg"></p>
+    <button id="resetBtn">✨ Play Again ✨</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -3,39 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nebula Navigator</title>
-    
+    <title>Echo Echo</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="instructions-overlay">
         <div id="instructions-content">
-            <h2>NEBULA NAVIGATOR</h2>
-            <p>Pilot a spaceship through colorful nebulae, collecting energy orbs while dodging cosmic debris and black holes!</p>
-            
-            <h3>Controls:</h3>
+            <h2>ECHO ECHO</h2>
+            <p>A rhythm-based game where you listen to sound echoes and repeat them by clicking at precise moments to build harmonious sequences.</p>
+
+            <h3>How to Play:</h3>
             <ul>
-                <li><code>Arrow Keys</code> - Move Ship</li>
-                <li><code>Space</code> - Boost</li>
+                <li>Watch and listen to the sequence of echoes</li>
+                <li>Click when you see the echo rings to repeat the pattern</li>
+                <li>Build longer and more complex sequences</li>
+                <li>Stay in rhythm to achieve harmony!</li>
             </ul>
-            
-            <button id="startButton">Start Game</button>
+
+            <button id="startButton">Start Echoing</button>
         </div>
     </div>
 
     <div id="game-ui">
         <div id="score">Score: 0</div>
-        <div id="lives">Lives: 3</div>
-        <div id="energy">Energy: 100</div>
+        <div id="level">Level: 1</div>
+        <div id="sequence">Sequence: 0/0</div>
     </div>
 
     <canvas id="gameCanvas"></canvas>
-    
+
+    <div id="click-indicator">Click!</div>
+
     <script src="script.js"></script>
 </body>
 </html>

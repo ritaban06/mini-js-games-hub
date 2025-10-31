@@ -1,0 +1,214 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    color: #ffffff;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-container {
+    position: relative;
+    width: 900px;
+    height: 700px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+    border: 2px solid rgba(0, 255, 255, 0.5);
+}
+
+#ui-panel {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    min-width: 200px;
+}
+
+#ui-panel div {
+    margin-bottom: 8px;
+    color: #00ffff;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+#power-bar-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    overflow: hidden;
+    z-index: 10;
+}
+
+#power-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000);
+    transition: width 0.1s ease;
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+}
+
+#gameCanvas {
+    display: block;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+    border-radius: 15px;
+}
+
+#instructions-overlay,
+#game-over-overlay,
+#level-complete-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+}
+
+.instructions-content,
+.game-over-content,
+.level-complete-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+    max-width: 600px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.instructions-content h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #00ffff;
+    text-shadow: 0 0 15px #00ffff;
+}
+
+.instructions-content h3 {
+    color: #ffaa00;
+    margin: 20px 0 10px 0;
+    font-size: 1.2em;
+}
+
+.instructions-content ul {
+    text-align: left;
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.instructions-content li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.instructions-content strong {
+    color: #00ff88;
+}
+
+button {
+    background: linear-gradient(135deg, #00ffff, #0088ff);
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 255, 255, 0.5);
+    background: linear-gradient(135deg, #33ffff, #3399ff);
+}
+
+.game-over-content h2,
+.level-complete-content h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2em;
+    color: #ff4444;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #ff4444;
+}
+
+.level-complete-content h2 {
+    color: #44ff44;
+    text-shadow: 0 0 10px #44ff44;
+}
+
+#final-score,
+#era-bonus {
+    font-size: 1.2em;
+    margin: 15px 0;
+    color: #ffff88;
+}
+
+/* Era-specific backgrounds */
+.prehistoric {
+    background: linear-gradient(135deg, #2d5016 0%, #4a7c24 50%, #1a2e0f 100%);
+}
+
+.ancient-egypt {
+    background: linear-gradient(135deg, #daa520 0%, #b8860b 50%, #8b6914 100%);
+}
+
+.medieval {
+    background: linear-gradient(135deg, #4a4a4a 0%, #696969 50%, #2f2f2f 100%);
+}
+
+.industrial {
+    background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 50%, #1a1a1a 100%);
+}
+
+.future {
+    background: linear-gradient(135deg, #1a0033 0%, #330066 50%, #000033 100%);
+}
+
+/* Glow effects */
+.glow-blue {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.glow-red {
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+.glow-green {
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.glow-yellow {
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+}

@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nebula Navigator</title>
-    
+    <title>Gravity Golf</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="instructions-overlay">
         <div id="instructions-content">
-            <h2>NEBULA NAVIGATOR</h2>
-            <p>Pilot a spaceship through colorful nebulae, collecting energy orbs while dodging cosmic debris and black holes!</p>
-            
+            <h2>GRAVITY GOLF</h2>
+            <p>Play golf on alien planets with varying gravity fields, adjusting shots to land in holes while overcoming planetary obstacles.</p>
+
             <h3>Controls:</h3>
             <ul>
-                <li><code>Arrow Keys</code> - Move Ship</li>
-                <li><code>Space</code> - Boost</li>
+                <li><code>Mouse</code> - Aim and set power</li>
+                <li><code>Click</code> - Shoot ball</li>
+                <li><code>R</code> - Reset shot</li>
+                <li><code>N</code> - Next level</li>
             </ul>
-            
-            <button id="startButton">Start Game</button>
+
+            <button id="startButton">Start Golfing</button>
         </div>
     </div>
 
     <div id="game-ui">
-        <div id="score">Score: 0</div>
-        <div id="lives">Lives: 3</div>
-        <div id="energy">Energy: 100</div>
+        <div id="score">Strokes: 0</div>
+        <div id="level">Planet: Earth</div>
+        <div id="gravity">Gravity: 0.5</div>
     </div>
 
     <canvas id="gameCanvas"></canvas>
-    
+
+    <div id="power-meter">
+        <div id="power-bar"></div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
