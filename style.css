@@ -876,6 +876,8 @@ body.light-theme .search input {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  line-height: 0;          /* ✅ Ensures perfect vertical centering */
+  padding: 0;              /* ✅ Remove any inner spacing */
 }
 body.light-theme .theme-toggle {
   background: rgba(245, 247, 255, 0.85);
