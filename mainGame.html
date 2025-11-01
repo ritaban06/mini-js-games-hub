@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mini Pac‑Like — Index</title>
+  <style>
+    :root{--bg:#0b0c1a;--wall:#0b59a7;--pellet:#ffd166;--player:#ffd43b;--ghost:#ff6b6b}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+    body{display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#071025 0%,#0b0c1a 100%);color:#e6eef8}
+    .stage{display:flex;flex-direction:column;gap:12px;align-items:center}
+    header{display:flex;gap:12px;align-items:center}
+    h1{font-size:20px;margin:0}
+    canvas{background:var(--bg);image-rendering:pixelated;border-radius:8px;box-shadow:0 8px 30px rgba(2,6,23,.75)}
+    .controls{display:flex;gap:8px;align-items:center}
+    .btn{background:#0f1724;border:1px solid rgba(255,255,255,.04);padding:8px 10px;border-radius:8px;color:#cfe3ff;cursor:pointer}
+    .legend{font-size:13px;opacity:.9}
+    footer{font-size:12px;opacity:.7}
+    @media (max-width:600px){canvas{width:320px;height:320px}}
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <header>
+      <h1>Mini Pac‑Like — Index</h1>
+      <div class="controls">
+        <button class="btn" id="startBtn">Start</button>
+        <button class="btn" id="pauseBtn">Pause</button>
+        <div class="legend">Use arrow keys / WASD to move</div>
+      </div>
+    </header>
+
+    <canvas id="gameCanvas" width="480" height="480"></canvas>
+    <footer>Simple demo: walls, pellets, player &amp; one ghost. Expand as needed.</footer>
+  </div>
+
+  <script>
+  // Simple Pac-like index page. Single-file demo for learning and prototyping.
+  (function(){
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const TILE = 24; // pixels
+    const COLS = Math.floor(canvas.width / TILE);
+    const ROWS = Math.floor(canvas.height / TILE);
+
+    // Map legend: 0 empty, 1 wall, 2 pellet
+    const level = [
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1],
+      [1,2,1,1,1,2,1,1,2,1,2,1,1,2,1,1,1,1,2,1],
+      [1,2,2,2,1,2,2,2,2,2,2,2,2,2,2,1,2,2,2,1],
+      [1,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,1,2,1],
+      [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1],
+      [1,2,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,2,1],
+      [1,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1,2,1],
+      [1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,2,1,1,1],
+      [1,2,2,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,2,1],
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+    // Normalize rows to COLS x ROWS (pad with empty)
+    while(level.length < ROWS) level.push(new Array(COLS).fill(2));
+    for(let r=0;r<ROWS;r++){ if(!level[r]) level[r]=new Array(COLS).fill(2); for(let c=0;c<COLS;c++){ if(typeof level[r][c]==='undefined') level[r][c]=2 }}
+
+    // Entities
+    const player = {x:9, y:9, dir:{x:0,y:0}, speed:5};
+    const ghost = {x:9, y:5, dir:{x:0,y:0}, speed:3, mode:'chase'};
+
+    let pellets = new Set();
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) if(level[r][c]===2) pellets.add(r+','+c);
+
+    let lastTime=0, running=false, score=0;
+
+    function draw(){
+      // clear
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      // draw tiles
+      for(let r=0;r<ROWS;r++){
+        for(let c=0;c<COLS;c++){
+          const x=c*TILE, y=r*TILE;
+          if(level[r][c]===1){ // wall
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--wall');
+            ctx.fillRect(x+2,y+2,TILE-4,TILE-4);
+          }
+        }
+      }
+
+      // pellets
+      pellets.forEach(k=>{
+        const [r,c] = k.split(',').map(Number);
+        const cx = c*TILE + TILE/2, cy = r*TILE + TILE/2;
+        ctx.beginPath(); ctx.arc(cx,cy,3,0,Math.PI*2); ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--pellet'); ctx.fill();
+      });
+
+      // player
+      ctx.beginPath();
+      const px = player.x*TILE + TILE/2, py = player.y*TILE + TILE/2;
+      ctx.arc(px,py,TILE*0.4,Math.PI/6,Math.PI*11/6); // mouth
+      ctx.lineTo(px,py);
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--player');
+      ctx.fill();
+
+      // ghost
+      ctx.save();
+      const gx = ghost.x*TILE + TILE/2, gy = ghost.y*TILE + TILE/2;
+      ctx.translate(gx,gy);
+      ctx.beginPath();
+      ctx.arc(0,-6,12,Math.PI,0);
+      ctx.rect(-12,-6,24,18);
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ghost');
+      ctx.fill();
+      // eyes
+      ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(-6,-2,3,0,Math.PI*2); ctx.arc(3,-2,3,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#000'; ctx.beginPath(); ctx.arc(-6,-2,1.2,0,Math.PI*2); ctx.arc(3,-2,1.2,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+
+      // HUD
+      ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(6,canvas.height-28,140,22);
+      ctx.fillStyle='#dbeafe'; ctx.font='14px system-ui'; ctx.fillText('Score: '+score,12,canvas.height-12);
+    }
+
+    function canMove(x,y){
+      if(x<0||y<0||x>=COLS||y>=ROWS) return false;
+      return level[y][x]!==1;
+    }
+
+    function update(dt){
+      // move player toward dir with simple grid snapping
+      if(player.dir.x!==0||player.dir.y!==0){
+        const nx = player.x + player.dir.x * player.speed * dt/1000;
+        const ny = player.y + player.dir.y * player.speed * dt/1000;
+        // snap movement: only allow if target tile is free
+        const tx = Math.round(nx), ty = Math.round(ny);
+        if(canMove(tx,ty)){
+          player.x = nx; player.y = ny;
+        }
+      }
+      // collect pellets if on tile
+      const pr = Math.round(player.y), pc = Math.round(player.x);
+      const key = pr+','+pc;
+      if(pellets.has(key)){ pellets.delete(key); score += 10 }
+
+      // ghost simple AI: move toward player if aligned, otherwise random
+      ghost.aiTimer = (ghost.aiTimer||0) + dt;
+      if(ghost.aiTimer>400){
+        ghost.aiTimer = 0;
+        const gsr = Math.round(ghost.y), gsc = Math.round(ghost.x);
+        const pr = Math.round(player.y), pc = Math.round(player.x);
+        // try horizontal move toward player
+        const tries = [];
+        if(pc > gsc) tries.push({x:1,y:0});
+        if(pc < gsc) tries.push({x:-1,y:0});
+        if(pr > gsr) tries.push({x:0,y:1});
+        if(pr < gsr) tries.push({x:0,y:-1});
+        // add random directions
+        const randDirs = [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
+        while(tries.length<4) tries.push(randDirs[Math.floor(Math.random()*4)]);
+        // pick first valid
+        for(const d of tries){
+          if(canMove(gsc+d.x, gsr+d.y)) { ghost.dir = d; break }
+        }
+      }
+      // move ghost
+      ghost.x += ghost.dir.x * ghost.speed * dt/1000;
+      ghost.y += ghost.dir.y * ghost.speed * dt/1000;
+
+      // collision player-ghost
+      if(Math.hypot(player.x - ghost.x, player.y - ghost.y) < 0.6){
+        running = false; alert('You were caught! Score: '+score); reset();
+      }
+
+      // win condition
+      if(pellets.size===0){ running=false; alert('You cleared the level! Score: '+score); reset(); }
+    }
+
+    function loop(ts){
+      const dt = Math.min(40, ts - lastTime || 16);
+      lastTime = ts;
+      if(running){ update(dt); }
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    function reset(){
+      // reset positions & pellets
+      player.x=9; player.y=9; player.dir={x:0,y:0};
+      ghost.x=9; ghost.y=5; ghost.dir={x:0,y:0};
+      pellets = new Set(); for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) if(level[r][c]===2) pellets.add(r+','+c);
+      score=0;
+    }
+
+    // input
+    window.addEventListener('keydown', e=>{
+      const k = e.key;
+      if(['ArrowUp','w','W'].includes(k)) player.dir={x:0,y:-1};
+      if(['ArrowDown','s','S'].includes(k)) player.dir={x:0,y:1};
+      if(['ArrowLeft','a','A'].includes(k)) player.dir={x:-1,y:0};
+      if(['ArrowRight','d','D'].includes(k)) player.dir={x:1,y:0};
+      if(k===' '){ running = !running }
+    });
+
+    document.getElementById('startBtn').addEventListener('click', ()=>{ running=true });
+    document.getElementById('pauseBtn').addEventListener('click', ()=>{ running=false });
+
+    // initial draw & start loop
+    reset(); requestAnimationFrame(loop);
+  })();
+  </script>
+</body>
+</html>
