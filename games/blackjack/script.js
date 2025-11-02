@@ -200,7 +200,7 @@ function revealDealerCard() {
 }
 
 // --- UI & Helper Functions ---
-function updateScores(hideDealerScore = false) {
+function updateScores(hideDealerScore = true) {
     playerScoreEl.textContent = getHandValue(playerHand);
     dealerScoreEl.textContent = hideDealerScore ? '?' : getHandValue(dealerHand);
 }
