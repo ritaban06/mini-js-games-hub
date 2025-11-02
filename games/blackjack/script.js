@@ -200,7 +200,7 @@ function revealDealerCard() {
 }
 
 // --- UI & Helper Functions ---
-function updateScores(hideDealerScore = true) {
+function updateScores(hideDealerScore = true) { // Observation: Setting hideDealerScore to true to hide dealer's next card properly.
     playerScoreEl.textContent = getHandValue(playerHand);
     dealerScoreEl.textContent = hideDealerScore ? '?' : getHandValue(dealerHand);
 }
